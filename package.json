@@ -1,0 +1,28 @@
+{
+  "name": "@hardenize/api",
+  "version": "0.0.1",
+  "author": "Hardenize Limited",
+  "license": "Apache-2.0",
+  "description": "Isomorphic JS client library for Hardenize API",
+  "homepage": "https://www.hardenize.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hardenize/hardenize-api-js-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hardenize/hardenize-api-js-client/issues"
+  },
+  "dependencies": {
+    "node-fetch": "^2.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.2"
+  },
+  "scripts": {
+    "build-static": "./node_modules/.bin/browserify index.js -s HardenizeApi -o static.js"
+  },
+  "browser": {
+    "buffer": false,
+    "node-fetch": false
+  }
+}
