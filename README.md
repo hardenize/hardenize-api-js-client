@@ -85,7 +85,7 @@ See https://www.hardenize.com/docs/api/v0/#create-a-certificate
 Example. Upload a certificate with a particular PEM
 
 ```js
-const { res } = await api.getCert('some pem content');
+const { res } = await api.uploadCert('some pem content');
 switch (res.status) {
     case 201: console.log('Certificate uploaded'); break;
     case 204: console.log('Certificate already existed'); break;
