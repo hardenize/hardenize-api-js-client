@@ -16,10 +16,11 @@
     "node-fetch": "^2.2.0"
   },
   "devDependencies": {
-    "browserify": "^16.2.2"
+    "browserify": "^16.2.2",
+    "uglifyify": "^5.0.1"
   },
   "scripts": {
-    "build-static": "./node_modules/.bin/browserify index.js -s HardenizeApi -o static.js"
+    "build-static": "./node_modules/.bin/browserify index.js -s HardenizeApi -t uglifyify -o static.js"
   },
   "browser": {
     "buffer": false,
