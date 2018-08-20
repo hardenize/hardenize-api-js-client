@@ -23,7 +23,15 @@ HardenizeApi.prototype.getCerts = require('./src/getCerts');
 HardenizeApi.prototype.getCert  = require('./src/getCert');
 HardenizeApi.prototype.addCert  = require('./src/addCert');
 
+HardenizeApi.prototype.addDnsZone = require('./src/addDnsZone');
+
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
+
+    var validStatus;
+    if (typeof path === 'object') {
+        validStatus = path.validStatus;
+        path        = path.path;
+    }
 
     var url = this.__config.url + '/org/' + this.__config.org + '/api/v' + API_VERSION + '/' + path.replace(/^\/+/,'');
 
@@ -46,7 +54,16 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
         var isJson = !!res.headers.get('content-type').match(/^application\/json([\s;].*)?$/i);
 
         return res[isJson ? 'json' : 'text']().then(function(body){
-            if (res.status >= 400) {
+            var badStatus = res.status >= 400;
+
+            if (validStatus) {
+                badStatus = true;
+                [].concat(validStatus).forEach(function(status){
+                    if (res.status == status) badStatus = false;
+                });
+            }
+
+            if (badStatus) {
                 var err = new Error(isJson ? res.statusText : body);
                 err.res = res;
                 if (isJson) err.data = body;
@@ -69,12 +86,12 @@ function base64(str) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./src/addCert":3,"./src/delCert":4,"./src/getCert":5,"./src/getCerts":6,"buffer":2,"node-fetch":2}],2:[function(require,module,exports){
+},{"./src/addCert":3,"./src/addDnsZone":4,"./src/delCert":5,"./src/getCert":6,"./src/getCerts":7,"buffer":2,"node-fetch":2}],2:[function(require,module,exports){
 
 },{}],3:[function(require,module,exports){
 module.exports = function addCert(pem){
     if (typeof pem !== 'string') return Promise.reject(new Error('Invalid PEM supplied'));
-    return this.apiCall('certs/', {
+    return this.apiCall({ path: 'certs/', validStatus: [ 201, 204 ] }, {
         method:  'put',
         headers: { 'Content-Type': 'application/x-pem-file' },
         body:    pem,
@@ -82,22 +99,59 @@ module.exports = function addCert(pem){
 };
 
 },{}],4:[function(require,module,exports){
+var statuses = [
+    'monitored',
+    'idle',
+    'archive',
+];
+
+module.exports = function addDnsZone(root, zoneBody, options){
+
+    if (typeof root     !== 'string') return Promise.reject(new Error('Invalid root param'));
+    if (typeof zoneBody !== 'string') return Promise.reject(new Error('Invalid zone body param'));
+
+    var qs = {};
+    if (typeof options !== 'undefined' && options !== null) {
+        if (options.hasOwnProperty('status')) {
+            if (isValidStatus(options.status)) {
+                qs.status = options.status;
+            } else {
+                return Promise.reject(new Error('Invalid status option supplied'));
+            }
+        }
+    }
+
+    var path = 'dns/zone/' + encodeURIComponent(root);
+    return this.apiCall({ path: path, validStatus: 201 }, {
+        method:  'post',
+        headers: { 'Content-Type': 'text/plain' },
+        body:    zoneBody,
+    }, qs);
+};
+
+function isValidStatus(status) {
+    for (var i = 0; i < statuses.length; ++i) {
+        if (statuses[i] === status) return true;
+    }
+    return false;
+}
+},{}],5:[function(require,module,exports){
 module.exports = function delCert(sha256){
     if (typeof sha256 !== 'string' || sha256.length !== 64) {
         return Promise.reject(new Error('Invalid SHA256'))
     }
-    return this.apiCall('certs/' + sha256, { method: 'delete' });
+    return this.apiCall('certs/' + encodeURIComponent(sha256), { method: 'delete' });
 };
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = function getCert(sha256){
     if (typeof sha256 !== 'string' || sha256.length !== 64) {
         return Promise.reject(new Error('Invalid SHA256'))
     }
-    return this.apiCall('certs/' + sha256);
+    return this.apiCall({ path: 'certs/' + encodeURIComponent(sha256), validStatus: 200 });
 };
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = function getCerts(options){
-    return this.apiCall('certs/', {}, options);
+    return this.apiCall({ path: 'certs/', validStatus: 200 }, {}, options);
 };
 },{}]},{},[1])(1)
 });
