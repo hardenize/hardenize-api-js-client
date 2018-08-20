@@ -78,16 +78,16 @@ Example. Fetch a certificate with a particular SHA256.
 const { data: { cert } } = await api.getCert('3c8031d6af1dc0a557381318692f0d4ecb74508e2116d489fec9dcc16a0f1552');
 ```
 
-#### uploadCert(pem)
+#### addCert(pem)
 
 See https://www.hardenize.com/docs/api/v0/#create-a-certificate
 
-Example. Upload a certificate with a particular PEM
+Example. Add a certificate with a particular PEM
 
 ```js
-const { res } = await api.uploadCert('some pem content');
+const { res } = await api.addCert('some pem content');
 switch (res.status) {
-    case 201: console.log('Certificate uploaded'); break;
+    case 201: console.log('Certificate addeded'); break;
     case 204: console.log('Certificate already existed'); break;
     default: // Should not get as far as this
 }

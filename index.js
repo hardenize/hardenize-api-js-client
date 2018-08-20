@@ -13,9 +13,9 @@ function HardenizeApi(config) {
     };
 }
 
-HardenizeApi.prototype.getCerts   = require('./src/getCerts');
-HardenizeApi.prototype.getCert    = require('./src/getCert');
-HardenizeApi.prototype.uploadCert = require('./src/uploadCert');
+HardenizeApi.prototype.getCerts = require('./src/getCerts');
+HardenizeApi.prototype.getCert  = require('./src/getCert');
+HardenizeApi.prototype.addCert  = require('./src/addCert');
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
