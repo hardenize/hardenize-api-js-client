@@ -6,11 +6,15 @@ var API_VERSION = 0;
 function HardenizeApi(config) {
 
     this.__config = {
-        org:  config.org,
-        user: config.user,
-        pass: config.pass,
-        url:  config.url || (typeof window === 'undefined' ? 'https://www.hardenize.com' : ''),
+        org:     config.org,
+        user:    config.user,
+        pass:    config.pass,
+        url:     config.url || (typeof window === 'undefined' ? 'https://www.hardenize.com' : ''),
     };
+
+    if (config.devMode) {
+        this.delCert = require('./src/delCert');
+    }
 }
 
 HardenizeApi.prototype.getCerts = require('./src/getCerts');
