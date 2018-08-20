@@ -13,25 +13,9 @@ function HardenizeApi(config) {
     };
 }
 
-HardenizeApi.prototype.getCerts = function getCerts(options){
-    return this.apiCall('certs/', {}, options);
-};
-
-HardenizeApi.prototype.getCert = function getCert(sha256){
-    if (typeof sha256 !== 'string' || sha256.length !== 64) {
-        return Promise.reject(new Error('Invalid SHA256'))
-    }
-    return this.apiCall('certs/' + sha256);
-};
-
-HardenizeApi.prototype.uploadCert = function uploadCert(pem){
-    if (typeof pem !== 'string') return Promise.reject(new Error('Invalid PEM supplied'));
-    return this.apiCall('certs/', {
-        method:  'put',
-        headers: { 'Content-Type': 'application/x-pem-file' },
-        body:    pem,
-    });
-};
+HardenizeApi.prototype.getCerts   = require('./src/getCerts');
+HardenizeApi.prototype.getCert    = require('./src/getCert');
+HardenizeApi.prototype.uploadCert = require('./src/uploadCert');
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
