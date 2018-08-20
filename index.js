@@ -21,6 +21,8 @@ HardenizeApi.prototype.getCerts = require('./src/getCerts');
 HardenizeApi.prototype.getCert  = require('./src/getCert');
 HardenizeApi.prototype.addCert  = require('./src/addCert');
 
+HardenizeApi.prototype.addDnsZone = require('./src/addDnsZone');
+
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
     var url = this.__config.url + '/org/' + this.__config.org + '/api/v' + API_VERSION + '/' + path.replace(/^\/+/,'');

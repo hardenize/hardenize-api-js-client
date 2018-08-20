@@ -93,6 +93,32 @@ switch (res.status) {
 }
 ```
 
+#### addDnsZone(root, zoneBody, options)
+
+See https://www.hardenize.com/docs/api/v0/#update-dns-zone
+
+Example. Add a dns zone for "example.com", setting the status of all found hosts to `idle`:
+
+```js
+const zoneBody = `$ORIGIN example.com.
+$TTL 1h
+@      IN  SOA   ns.example.com. admin.example.com. ( 2018081601 1d 2h 4w 1h )
+@      IN  NS    ns
+@      IN  MX    10 mx.example.com.
+@      IN  A     192.0.2.1
+       IN  AAAA  2001:db8:10::1
+ns     IN  A     192.0.2.2
+       IN  AAAA  2001:db8:10::2
+www    IN  CNAME example.com.
+mx     IN  A     192.0.2.3`;
+
+const { res } = await api.addDnsZone('example.com', zoneBody, { status: 'idle' });
+switch (res.status) {
+    case 201: console.log('Zone added'); break;
+    default: // Should not get as far as this
+}
+```
+
 ### Development
 
 If you are a core developer of this library (you almost certainly aren't, unless you work for
