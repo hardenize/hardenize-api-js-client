@@ -25,6 +25,12 @@ HardenizeApi.prototype.addDnsZone = require('./src/addDnsZone');
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
+    var validStatus;
+    if (typeof path === 'object') {
+        validStatus = path.validStatus;
+        path        = path.path;
+    }
+
     var url = this.__config.url + '/org/' + this.__config.org + '/api/v' + API_VERSION + '/' + path.replace(/^\/+/,'');
 
     if (typeof qsOptions === 'object' && qsOptions !== null) {
@@ -46,7 +52,16 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
         var isJson = !!res.headers.get('content-type').match(/^application\/json([\s;].*)?$/i);
 
         return res[isJson ? 'json' : 'text']().then(function(body){
-            if (res.status >= 400) {
+            var badStatus = res.status >= 400;
+
+            if (validStatus) {
+                badStatus = true;
+                [].concat(validStatus).forEach(function(status){
+                    if (res.status == status) badStatus = false;
+                });
+            }
+
+            if (badStatus) {
                 var err = new Error(isJson ? res.statusText : body);
                 err.res = res;
                 if (isJson) err.data = body;
