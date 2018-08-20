@@ -15,25 +15,9 @@ function HardenizeApi(config) {
     };
 }
 
-HardenizeApi.prototype.getCerts = function getCerts(options){
-    return this.apiCall('certs/', {}, options);
-};
-
-HardenizeApi.prototype.getCert = function getCert(sha256){
-    if (typeof sha256 !== 'string' || sha256.length !== 64) {
-        return Promise.reject(new Error('Invalid SHA256'))
-    }
-    return this.apiCall('certs/' + sha256);
-};
-
-HardenizeApi.prototype.uploadCert = function uploadCert(pem){
-    if (typeof pem !== 'string') return Promise.reject(new Error('Invalid PEM supplied'));
-    return this.apiCall('certs/', {
-        method:  'put',
-        headers: { 'Content-Type': 'application/x-pem-file' },
-        body:    pem,
-    });
-};
+HardenizeApi.prototype.getCerts = require('./src/getCerts');
+HardenizeApi.prototype.getCert  = require('./src/getCert');
+HardenizeApi.prototype.addCert  = require('./src/addCert');
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
@@ -81,7 +65,28 @@ function base64(str) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"buffer":2,"node-fetch":2}],2:[function(require,module,exports){
+},{"./src/addCert":3,"./src/getCert":4,"./src/getCerts":5,"buffer":2,"node-fetch":2}],2:[function(require,module,exports){
 
+},{}],3:[function(require,module,exports){
+module.exports = function addCert(pem){
+    if (typeof pem !== 'string') return Promise.reject(new Error('Invalid PEM supplied'));
+    return this.apiCall('certs/', {
+        method:  'put',
+        headers: { 'Content-Type': 'application/x-pem-file' },
+        body:    pem,
+    });
+};
+
+},{}],4:[function(require,module,exports){
+module.exports = function getCert(sha256){
+    if (typeof sha256 !== 'string' || sha256.length !== 64) {
+        return Promise.reject(new Error('Invalid SHA256'))
+    }
+    return this.apiCall('certs/' + sha256);
+};
+},{}],5:[function(require,module,exports){
+module.exports = function getCerts(options){
+    return this.apiCall('certs/', {}, options);
+};
 },{}]},{},[1])(1)
 });
