@@ -92,3 +92,17 @@ switch (res.status) {
     default: // Should not get as far as this
 }
 ```
+
+### Development
+
+If you are a core developer of this library (you almost certainly aren't, unless you work for Hardenize Limited)
+and wish to change the API URL that it talks to (for example to make it talk to a dev environment), you can
+override it by passing an optional `url` parameter when instantiating the object. By default `url`
+contains 'https://www.hardenize.com'
+
+```js
+const api = new HardenizeApi({
+    url:  'https://www.example.com',
+    ...
+});
+```
