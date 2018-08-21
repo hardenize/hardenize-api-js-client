@@ -17,6 +17,14 @@ function HardenizeApi(config) {
     }
 }
 
+HardenizeApi.version = function apiVersion() {
+    return String(API_VERSION);
+}
+
+HardenizeApi.prototype.version = function apiVersion(){
+    return HardenizeApi.version();
+};
+
 HardenizeApi.prototype.getCerts = require('./src/getCerts');
 HardenizeApi.prototype.getCert  = require('./src/getCert');
 HardenizeApi.prototype.addCert  = require('./src/addCert');

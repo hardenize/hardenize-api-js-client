@@ -58,6 +58,18 @@ in this documentation will drop suitable error handling and ignore the `async` w
 
 ### Methods
 
+#### version()
+
+Returns the api version string. Can also be called as a class function. E.g:
+
+```js
+import HardenizeApi from '@hardenize/api';
+
+const api = new HardenizeApi({ config });
+
+HardenizeApi.version() === api.version();
+```
+
 #### getCerts(options)
 
 See https://www.hardenize.com/docs/api/v0/#list-certificates
