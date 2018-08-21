@@ -20,7 +20,7 @@ module.exports = function addDnsZone(root, zoneBody, options){
         }
     }
 
-    var path = 'dns/zone/' + encodeURIComponent(root);
+    var path = 'dns/zone/' + encodeURIComponent(root.toLowerCase());
     return this.apiCall({ path: path, validStatus: 201 }, {
         method:  'post',
         headers: { 'Content-Type': 'text/plain' },
