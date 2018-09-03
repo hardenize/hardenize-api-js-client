@@ -70,6 +70,17 @@ const api = new HardenizeApi({ config });
 HardenizeApi.version() === api.version();
 ```
 
+#### config(name, value)
+
+Allows you to view or change configuration on an existing API object. Examples:
+
+```js
+api.config();                             // View all config
+api.config('user');                       // View just config.user
+api.config('user', 'foo');                // Change user to foo
+api.config({ user: 'foo', pass: 'bar' }); // Change user to foo and pass to bar
+```
+
 #### getCerts(options)
 
 See https://www.hardenize.com/docs/api/v0/#list-certificates

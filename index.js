@@ -4,14 +4,16 @@ var Headers = fetch.Headers || global.Headers;
 var API_VERSION = 0;
 
 function HardenizeApi(config) {
+    if (!config) config = {};
 
-    this.__config = {
-        org:     config.org,
-        user:    config.user,
-        pass:    config.pass,
-        url:     config.url || (typeof window === 'undefined' ? 'https://www.hardenize.com' : ''),
-    };
-
+    this.__config = {};
+    if (config.hasOwnProperty('org'))  this.__config.org  = config.org;
+    if (config.hasOwnProperty('user')) this.__config.user = config.user;
+    if (config.hasOwnProperty('pass')) this.__config.pass = config.pass;
+    if (config.hasOwnProperty('url'))  this.__config.url  = config.url;
+    
+    if (typeof window !== 'undefined' && !config.hasOwnProperty('url')) this.__config.url = 'https://www.hardenize.com';
+    
     if (config.devMode) {
         this.delCert = endpoint(require('./src/delCert'));
     }
@@ -23,6 +25,25 @@ HardenizeApi.version = function apiVersion() {
 
 HardenizeApi.prototype.version = function apiVersion(){
     return HardenizeApi.version();
+};
+
+HardenizeApi.prototype.config = function config(name, value){
+    var self = this;
+    if (typeof name === 'undefined') {
+        var config = {};
+        Object.keys(this.__config).forEach(function(name){
+            config[name] = self.__config[name];
+        });
+        return config;
+    } else if (typeof name === 'object' && name !== null) {
+        Object.keys(name).forEach(function(n){
+            self.config(n, name[n]);
+        });
+    } else if (typeof value !== 'undefined') {
+        this.__config[name] = value;
+    } else {
+        return this.__config[name];
+    }
 };
 
 HardenizeApi.prototype.getCerts   = endpoint(require('./src/getCerts'));
