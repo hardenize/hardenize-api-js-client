@@ -13,7 +13,7 @@ function HardenizeApi(config) {
     };
 
     if (config.devMode) {
-        this.delCert = require('./src/delCert');
+        this.delCert = endpoint(require('./src/delCert'));
     }
 }
 
@@ -25,23 +25,28 @@ HardenizeApi.prototype.version = function apiVersion(){
     return HardenizeApi.version();
 };
 
-function endpoint(func) {
-    return function(){
-        try {
-            var result = func.apply(this, arguments);
-            if (!result instanceof Promise) result = Promise.resolve(result);
-            return result;
-        } catch(err) {
-            if (!(err instanceof Error)) err = new Error(err);
-            return Promise.reject(err);
-        }
-    };
-}
-
 HardenizeApi.prototype.getCerts   = endpoint(require('./src/getCerts'));
 HardenizeApi.prototype.getCert    = endpoint(require('./src/getCert'));
 HardenizeApi.prototype.addCert    = endpoint(require('./src/addCert'));
 HardenizeApi.prototype.addDnsZone = endpoint(require('./src/addDnsZone'));
+
+HardenizeApi.wrapApiCall = function(wrapper) {
+    var apiCall = HardenizeApi.prototype.apiCall;
+    HardenizeApi.prototype.apiCall = function(path, fetchOptions, qsOptions) {
+        if (!fetchOptions) fetchOptions = {};
+        if (!qsOptions)    qsOptions    = {};
+        return wrapper.call(this, path, fetchOptions, qsOptions, apiCall.bind(this));
+    };
+};
+
+HardenizeApi.prototype.wrapApiCall = function(wrapper) {
+    var apiCall = this.apiCall;
+    this.apiCall = function(path, fetchOptions, qsOptions) {
+        if (!fetchOptions) fetchOptions = {};
+        if (!qsOptions)    qsOptions    = {};
+        return wrapper.call(this, path, fetchOptions, qsOptions, apiCall.bind(this));
+    };
+};
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
@@ -111,4 +116,17 @@ function base64(str) {
     if (typeof window !== 'undefined' && window.btoa) return btoa(str);
     if (typeof Buffer !== 'undefined') return Buffer.from(str).toString('base64');
     throw new Error('Unable to use base64 to add Authorization header');
+}
+
+function endpoint(func) {
+    return function(){
+        try {
+            var result = func.apply(this, arguments);
+            if (!result instanceof Promise) result = Promise.resolve(result);
+            return result;
+        } catch(err) {
+            if (!(err instanceof Error)) err = new Error(err);
+            return Promise.reject(err);
+        }
+    };
 }

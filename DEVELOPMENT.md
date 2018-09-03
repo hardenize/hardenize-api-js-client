@@ -37,3 +37,43 @@ const api = new HardenizeApi({
 });
 const { data, res } = await api.delCert(sha256);
 ```
+
+## Wrapping API calls
+
+You may wish to wrap API calls to make changes to them before they are sent. You can do this
+globally, or on a per HardenizeApi object basis. Examples:
+
+```js
+HardenizeApi.wrapApiCall((path, fetchOptions, data, next) => {
+    // Look at and/or make modifications to fetch options and data here
+    return next(path, fetchOptions, data)
+        .then(res => {
+            // Look at response
+            return res;
+        })
+        .catch(err => {
+            // Look at errors
+            return Promise.reject(err);
+        });
+});
+```
+
+Or:
+
+```js
+const api = new HardenizeApi(config);
+api.wrapApiCall((path, fetchOptions, data, next) => {
+    // Look at and/or make modifications to fetch options and data here
+    return next(path, fetchOptions, data)
+        .then(res => {
+            // Look at response
+            return res;
+        })
+        .catch(err => {
+            // Look at errors
+            return Promise.reject(err);
+        });
+});
+```
+
+Do not forget to "return" the result of next as it is a promise that the calling method needs access to.
