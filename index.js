@@ -25,11 +25,23 @@ HardenizeApi.prototype.version = function apiVersion(){
     return HardenizeApi.version();
 };
 
-HardenizeApi.prototype.getCerts = require('./src/getCerts');
-HardenizeApi.prototype.getCert  = require('./src/getCert');
-HardenizeApi.prototype.addCert  = require('./src/addCert');
+function endpoint(func) {
+    return function(){
+        try {
+            var result = func.apply(this, arguments);
+            if (!result instanceof Promise) result = Promise.resolve(result);
+            return result;
+        } catch(err) {
+            if (!(err instanceof Error)) err = new Error(err);
+            return Promise.reject(err);
+        }
+    };
+}
 
-HardenizeApi.prototype.addDnsZone = require('./src/addDnsZone');
+HardenizeApi.prototype.getCerts   = endpoint(require('./src/getCerts'));
+HardenizeApi.prototype.getCert    = endpoint(require('./src/getCert'));
+HardenizeApi.prototype.addCert    = endpoint(require('./src/addCert'));
+HardenizeApi.prototype.addDnsZone = endpoint(require('./src/addDnsZone'));
 
 HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
 
@@ -52,8 +64,13 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
     }
 
     if (!fetchOptions) fetchOptions = {};
+
     fetchOptions.headers = new Headers(fetchOptions.headers);
-    fetchOptions.headers.set('Authorization', 'Basic ' + base64(this.__config.user + ':' + this.__config.pass));
+
+    // Add Basic authentication if a user and pass were supplied
+    if (this.__config.user && this.__config.pass) {
+        fetchOptions.headers.set('Authorization', 'Basic ' + base64(this.__config.user + ':' + this.__config.pass));
+    }
 
     return fetch(url, fetchOptions).then(function(res){
 
@@ -70,7 +87,12 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
             }
 
             if (badStatus) {
-                var err = new Error(isJson ? res.statusText : body);
+
+                var err = typeof res.statusText === 'string' && res.statusText.length ? res.statusText : String(res.status);
+                if (isJson && typeof body === 'object' && body !== null && body.errors) {
+                    err = body.errors.join(', ');
+                }
+                err     = new Error(err);
                 err.res = res;
                 if (isJson) err.data = body;
                 return Promise.reject(err);

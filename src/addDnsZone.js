@@ -6,8 +6,8 @@ var statuses = [
 
 module.exports = function addDnsZone(root, zoneBody, options){
 
-    if (typeof root     !== 'string') return Promise.reject(new Error('Invalid root param'));
-    if (typeof zoneBody !== 'string') return Promise.reject(new Error('Invalid zone body param'));
+    if (typeof root     !== 'string') throw 'Invalid root param';
+    if (typeof zoneBody !== 'string') throw 'Invalid zone body param';
 
     var qs = {};
     if (typeof options !== 'undefined' && options !== null) {
@@ -15,7 +15,7 @@ module.exports = function addDnsZone(root, zoneBody, options){
             if (isValidStatus(options.status)) {
                 qs.status = options.status;
             } else {
-                return Promise.reject(new Error('Invalid status option supplied'));
+                throw 'Invalid status option supplied';
             }
         }
     }
