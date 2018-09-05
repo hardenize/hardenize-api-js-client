@@ -86,7 +86,15 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
             });
             return o;
         }, []);
-        if (qs.length) url += '?' + qs.join('&');
+        if (qs.length) {
+            var m = url.match(/\?(.*)$/);
+            if (m) {
+                if (m[1].length) url += '&';
+            } else {
+                url += '?';
+            }
+            url += qs.join('&');
+        }
     }
 
     if (!fetchOptions) fetchOptions = {};
