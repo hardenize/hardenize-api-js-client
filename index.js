@@ -15,7 +15,7 @@ function HardenizeApi(config) {
     if (typeof window !== 'undefined' && !config.hasOwnProperty('url')) this.__config.url = 'https://www.hardenize.com';
     
     if (config.devMode) {
-        this.delCert = endpoint(require('./src/delCert'));
+        this.delCert = endpoint(require('./src/certs/delCert'));
     }
 }
 
@@ -48,10 +48,10 @@ HardenizeApi.prototype.config = function config(name, value){
     }
 };
 
-HardenizeApi.prototype.getCerts   = endpoint(require('./src/getCerts'));
-HardenizeApi.prototype.getCert    = endpoint(require('./src/getCert'));
-HardenizeApi.prototype.addCert    = endpoint(require('./src/addCert'));
-HardenizeApi.prototype.addDnsZone = endpoint(require('./src/addDnsZone'));
+HardenizeApi.prototype.getCerts   = endpoint(require('./src/certs/getCerts'));
+HardenizeApi.prototype.getCert    = endpoint(require('./src/certs/getCert'));
+HardenizeApi.prototype.addCert    = endpoint(require('./src/certs/addCert'));
+HardenizeApi.prototype.addDnsZone = endpoint(require('./src/dns_zone/addDnsZone'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
