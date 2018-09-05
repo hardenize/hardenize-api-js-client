@@ -122,7 +122,9 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
                 var err = typeof res.statusText === 'string' && res.statusText.length ? res.statusText : String(res.status);
                 if (isJson && typeof body === 'object' && body !== null && body.errors) {
                     err = body.errors.map(function(err){
-                        return err.message;
+                        var item = err.message;
+                        if (err.param) item = '"' + err.param + '" param: ' + item;
+                        return item;
                     }).join(', ');
                 }
                 err     = new Error(err);
