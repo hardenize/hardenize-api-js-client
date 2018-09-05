@@ -11,10 +11,6 @@ function HardenizeApi(config) {
     if (config.hasOwnProperty('user')) this.__config.user = config.user;
     if (config.hasOwnProperty('pass')) this.__config.pass = config.pass;
     this.__config.url = config.hasOwnProperty('url') ? config.url : 'https://www.hardenize.com';
-
-    if (config.devMode) {
-        this.delCert = endpoint(require('./src/certs/delCert'));
-    }
 }
 
 HardenizeApi.version = function apiVersion() {

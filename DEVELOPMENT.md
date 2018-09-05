@@ -25,19 +25,6 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 DO NOT LET THIS CODE FIND IT'S WAY INTO PRODUCTION!!!
 
-## Dev mode
-
-If you enable "dev mode" when constructing an API object, you will have access to additional methods
-that are not useful to anybody unless they are working on a dev hardenize instance. 'delCert' is one
-of the methods in question. Example:
-
-```js
-const api = new HardenizeApi({
-    devMode: true,
-});
-const { data, res } = await api.delCert(sha256);
-```
-
 ## Wrapping API calls
 
 You may wish to wrap API calls to make changes to them before they are sent. You can do this
