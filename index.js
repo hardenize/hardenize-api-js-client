@@ -92,6 +92,7 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
     if (!fetchOptions) fetchOptions = {};
 
     fetchOptions.headers = new Headers(fetchOptions.headers);
+    if (!fetchOptions.hasOwnProperty('redirect')) fetchOptions.redirect = 'error';
 
     // Add Basic authentication if a user and pass were supplied
     if (this.__config.user && this.__config.pass) {
