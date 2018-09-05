@@ -39,6 +39,8 @@ HardenizeApi.prototype.config = function config(name, value){
         Object.keys(name).forEach(function(n){
             self.config(n, name[n]);
         });
+    } else if (value === null) {
+        delete this.__config[name];
     } else if (typeof value !== 'undefined') {
         this.__config[name] = value;
     } else {

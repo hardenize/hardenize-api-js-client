@@ -75,10 +75,11 @@ HardenizeApi.version() === api.version();
 Allows you to view or change configuration on an existing API object. Examples:
 
 ```js
-api.config();                             // View all config
-api.config('user');                       // View just config.user
-api.config('user', 'foo');                // Change user to foo
-api.config({ user: 'foo', pass: 'bar' }); // Change user to foo and pass to bar
+api.config();                           // View all config
+api.config('user');                     // View just config.user
+api.config('user', 'foo');              // Change user to foo
+api.config('user', null);               // Delete user from config
+api.config({ pass: 'foo', org: null }); // Change pass to foo and delete org
 ```
 
 #### getCerts(options)
