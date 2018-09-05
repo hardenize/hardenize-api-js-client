@@ -10,10 +10,8 @@ function HardenizeApi(config) {
     if (config.hasOwnProperty('org'))  this.__config.org  = config.org;
     if (config.hasOwnProperty('user')) this.__config.user = config.user;
     if (config.hasOwnProperty('pass')) this.__config.pass = config.pass;
-    if (config.hasOwnProperty('url'))  this.__config.url  = config.url;
-    
-    if (typeof window !== 'undefined' && !config.hasOwnProperty('url')) this.__config.url = 'https://www.hardenize.com';
-    
+    this.__config.url = config.hasOwnProperty('url') ? config.url : 'https://www.hardenize.com';
+
     if (config.devMode) {
         this.delCert = endpoint(require('./src/certs/delCert'));
     }
