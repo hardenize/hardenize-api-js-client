@@ -180,6 +180,67 @@ pass an additional object with `force` set to true:
 await api.deleteTag('TagName', { force: true });
 ```
 
+#### getHosts(options)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#list-hosts
+
+Fetch a list of hosts
+
+```js
+const { data: { hosts } } = await api.getHosts();
+```
+
+#### getHost(hostname)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#retrieve-host
+
+Fetch details about a host
+
+```js
+const { data: { host } } = await api.getHost('example.com');
+```
+
+#### addHosts(names, options)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#create-hosts
+
+Create new hosts
+
+```js
+await api.addHosts([ 'example.com', 'example.org' ], {
+    status: 'monitored',
+    tags:   ['Production'],
+});
+```
+
+#### updateHosts(names, options)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#update-hosts
+
+Update hosts.
+
+Example: Update example.com, example.org and all hosts that are subdomains of those two
+hostnames. Set their statuses to 'idle', and add a tag named "New" to each of them.
+
+```js
+await api.updateHosts([ 'example.com', 'example.org' ], {
+    subdomains: true,
+    status:    'idle',
+    tags:      ['New'],
+    tagOp:     'add',
+});
+```
+
+#### deleteHosts(names, options)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#delete-hosts
+
+Delete hosts
+
+```js
+await api.deleteHosts([ 'example.com', 'example.org' ]);
+```
+
 ### Development
 
 If you are a core developer of this library (you almost certainly aren't, unless you work for
