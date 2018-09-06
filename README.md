@@ -109,10 +109,10 @@ See https://www.hardenize.com/docs/api/v0/#create-a-certificate
 Example. Add a certificate with a particular PEM
 
 ```js
-const { res } = await api.addCert('some pem content');
+const { res, data: { sha256 } } = await api.addCert('some pem content');
 switch (res.status) {
-    case 201: console.log('Certificate added'); break;
-    case 204: console.log('Certificate already existed'); break;
+    case 201: console.log('Certificate added',           sha256); break;
+    case 202: console.log('Certificate already existed', sha256); break;
     default: // Should not get as far as this
 }
 ```
