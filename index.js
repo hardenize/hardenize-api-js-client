@@ -1,7 +1,7 @@
 var fetch   = typeof window === 'undefined' ? require('node-fetch') : window.fetch;
 var Headers = fetch.Headers || global.Headers;
 
-var API_VERSION = 0;
+var API_VERSION = 1;
 
 function HardenizeApi(config) {
     if (!config) config = {};
