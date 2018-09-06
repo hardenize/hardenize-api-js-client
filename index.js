@@ -42,13 +42,18 @@ HardenizeApi.prototype.config = function config(name, value){
     }
 };
 
-HardenizeApi.prototype.getCerts   = endpoint(require('./src/certs/getCerts'));
-HardenizeApi.prototype.getCert    = endpoint(require('./src/certs/getCert'));
-HardenizeApi.prototype.addCert    = endpoint(require('./src/certs/addCert'));
-HardenizeApi.prototype.addDnsZone = endpoint(require('./src/dns_zone/addDnsZone'));
-HardenizeApi.prototype.getTags    = endpoint(require('./src/tags/getTags'));
-HardenizeApi.prototype.addTag     = endpoint(require('./src/tags/addTag'));
-HardenizeApi.prototype.deleteTag  = endpoint(require('./src/tags/deleteTag'));
+HardenizeApi.prototype.getCerts    = endpoint(require('./src/certs/getCerts'));
+HardenizeApi.prototype.getCert     = endpoint(require('./src/certs/getCert'));
+HardenizeApi.prototype.addCert     = endpoint(require('./src/certs/addCert'));
+HardenizeApi.prototype.addDnsZone  = endpoint(require('./src/dns_zone/addDnsZone'));
+HardenizeApi.prototype.getTags     = endpoint(require('./src/tags/getTags'));
+HardenizeApi.prototype.addTag      = endpoint(require('./src/tags/addTag'));
+HardenizeApi.prototype.deleteTag   = endpoint(require('./src/tags/deleteTag'));
+HardenizeApi.prototype.getHosts    = endpoint(require('./src/hosts/getHosts'));
+HardenizeApi.prototype.getHost     = endpoint(require('./src/hosts/getHost'));
+HardenizeApi.prototype.addHosts    = endpoint(require('./src/hosts/addHosts'));
+HardenizeApi.prototype.updateHosts = endpoint(require('./src/hosts/updateHosts'));
+HardenizeApi.prototype.deleteHosts = endpoint(require('./src/hosts/deleteHosts'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
