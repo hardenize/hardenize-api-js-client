@@ -163,21 +163,21 @@ Create a new tag
 await api.addTag('TagName');
 ```
 
-#### delTag(tag, options)
+#### deleteTag(tag, options)
 
 See https://local.hardenizer.com:8443/docs/api/v1/#delete-tag
 
 Delete a tag
 
 ```js
-await api.delTag('TagName');
+await api.deleteTag('TagName');
 ```
 
 This will fail if the tag is in use. If you want to force removal even if the tag is in use,
 pass an additional object with `force` set to true:
 
 ```js
-await api.delTag('TagName', { force: true });
+await api.deleteTag('TagName', { force: true });
 ```
 
 ### Development
