@@ -136,11 +136,44 @@ ns     IN  A     192.0.2.2
 www    IN  CNAME example.com.
 mx     IN  A     192.0.2.3`;
 
-const { res } = await api.addDnsZone('example.com', zoneBody, { status: 'idle' });
-switch (res.status) {
-    case 201: console.log('Zone added'); break;
-    default: // Should not get as far as this
-}
+await api.addDnsZone('example.com', zoneBody, { status: 'idle' });
+```
+
+#### getTags()
+
+See https://local.hardenizer.com:8443/docs/api/v1/#list-tags
+
+Fetch a list of tags.
+
+```js
+const { data: { tags } } = await api.getTags();
+```
+
+#### addTag(tag)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#create-tag
+
+Create a new tag
+
+```js
+await api.addTag('TagName');
+```
+
+#### delTag(tag, options)
+
+See https://local.hardenizer.com:8443/docs/api/v1/#delete-tag
+
+Delete a tag
+
+```js
+await api.delTag('TagName');
+```
+
+This will fail if the tag is in use. If you want to force removal even if the tag is in use,
+pass an additional object with `force` set to true:
+
+```js
+await api.delTag('TagName', { force: true });
 ```
 
 ### Development

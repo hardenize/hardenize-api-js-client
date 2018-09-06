@@ -46,6 +46,9 @@ HardenizeApi.prototype.getCerts   = endpoint(require('./src/certs/getCerts'));
 HardenizeApi.prototype.getCert    = endpoint(require('./src/certs/getCert'));
 HardenizeApi.prototype.addCert    = endpoint(require('./src/certs/addCert'));
 HardenizeApi.prototype.addDnsZone = endpoint(require('./src/dns_zone/addDnsZone'));
+HardenizeApi.prototype.getTags    = endpoint(require('./src/tags/getTags'));
+HardenizeApi.prototype.addTag     = endpoint(require('./src/tags/addTag'));
+HardenizeApi.prototype.delTag     = endpoint(require('./src/tags/delTag'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
