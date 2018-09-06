@@ -1,6 +1,10 @@
 # Hardenize API
 
-This is an isomorphic javascript client library for accessing the [Hardenize Org API](https://www.hardenize.com/docs/api/v0/)
+This is an isomorphic javascript client library for accessing the [Hardenize Org API](https://www.hardenize.com/docs/api/v1/)
+
+Although it is isomorphic, you will almost always only want to use it from inside NodeJS. That is because
+if you use it from a web browser, you will expose your Hardenize API credentials, which you *MUST* keep
+secret.
 
 ## Install
 
