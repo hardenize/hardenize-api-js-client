@@ -1,11 +1,11 @@
 module.exports = function addTag(name, options){
 
     var body = {
-        name: name.trim(),
+        name: name,
     };
 
     if (typeof options === 'object' && options !== null) {
-        if (options.hasOwnProperty('displayName')) body.displayName = options.displayName.trim();
+        if (options.hasOwnProperty('displayName')) body.displayName = options.displayName;
     }
 
     return this.apiCall({ path: 'tags/', validStatus: 201 }, {
