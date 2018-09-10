@@ -8,7 +8,7 @@ module.exports = function addHosts(names, options){
     }
 
     return this.apiCall({ path: 'hosts/', validStatus: 201 }, {
-        method:  'put',
+        method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),
     });
