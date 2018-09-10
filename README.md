@@ -251,7 +251,7 @@ Example: Fetch a list of reports for `example.com` and it's subdomains. Only
 include those with the `production` tag.
 
 ```js
-const { data: { summaries } } = await api.getReports0({
+const { data: { reports } } = await api.getReports0({
     name:       'example.com',
     subdomains: true,
     tag:        'production'
