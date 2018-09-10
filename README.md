@@ -145,7 +145,7 @@ await api.addDnsZone('example.com', zoneBody, { status: 'idle' });
 
 #### getTags()
 
-See https://local.hardenizer.com:8443/docs/api/v1/#list-tags
+See https://www.hardenize.com/docs/api/v1/#list-tags
 
 Fetch a list of tags.
 
@@ -155,7 +155,7 @@ const { data: { tags } } = await api.getTags();
 
 #### addTag(tag)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#create-tag
+See https://www.hardenize.com/docs/api/v1/#create-tag
 
 Create a new tag
 
@@ -165,7 +165,7 @@ await api.addTag('TagName');
 
 #### deleteTag(tag, options)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#delete-tag
+See https://www.hardenize.com/docs/api/v1/#delete-tag
 
 Delete a tag
 
@@ -182,7 +182,7 @@ await api.deleteTag('TagName', { force: true });
 
 #### getHosts(options)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#list-hosts
+See https://www.hardenize.com/docs/api/v1/#list-hosts
 
 Fetch a list of hosts
 
@@ -192,7 +192,7 @@ const { data: { hosts } } = await api.getHosts();
 
 #### getHost(hostname)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#retrieve-host
+See https://www.hardenize.com/docs/api/v1/#retrieve-host
 
 Fetch details about a host
 
@@ -202,7 +202,7 @@ const { data: { host } } = await api.getHost('example.com');
 
 #### addHosts(names, options)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#create-hosts
+See https://www.hardenize.com/docs/api/v1/#create-hosts
 
 Create new hosts
 
@@ -215,7 +215,7 @@ await api.addHosts([ 'example.com', 'example.org' ], {
 
 #### updateHosts(names, options)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#update-hosts
+See https://www.hardenize.com/docs/api/v1/#update-hosts
 
 Update hosts.
 
@@ -233,12 +233,29 @@ await api.updateHosts([ 'example.com', 'example.org' ], {
 
 #### deleteHosts(names, options)
 
-See https://local.hardenizer.com:8443/docs/api/v1/#delete-hosts
+See https://www.hardenize.com/docs/api/v1/#delete-hosts
 
 Delete hosts
 
 ```js
 await api.deleteHosts([ 'example.com', 'example.org' ]);
+```
+
+#### getReports0(options)
+
+See https://www.hardenize.com/docs/api/v1/#list-report-summaries
+
+Fetch a list of reports.
+
+Example: Fetch a list of reports for `example.com` and it's subdomains. Only
+include those with the `production` tag.
+
+```js
+const { data: { summaries } } = await api.getReports0({
+    name:       'example.com',
+    subdomains: true,
+    tag:        'production'
+});
 ```
 
 ### Development

@@ -54,6 +54,7 @@ HardenizeApi.prototype.getHost     = endpoint(require('./src/hosts/getHost'));
 HardenizeApi.prototype.addHosts    = endpoint(require('./src/hosts/addHosts'));
 HardenizeApi.prototype.updateHosts = endpoint(require('./src/hosts/updateHosts'));
 HardenizeApi.prototype.deleteHosts = endpoint(require('./src/hosts/deleteHosts'));
+HardenizeApi.prototype.getReports0 = endpoint(require('./src/reports0/getReports'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
