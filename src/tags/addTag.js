@@ -1,10 +1,16 @@
-module.exports = function addTag(name){
+module.exports = function addTag(name, options){
 
-    name = name.trim();
+    var body = {
+        name: name.trim(),
+    };
+
+    if (typeof options === 'object' && options !== null) {
+        if (options.hasOwnProperty('displayName')) body.displayName = options.displayName.trim();
+    }
 
     return this.apiCall({ path: 'tags/', validStatus: 201 }, {
-        method:  'put',
+        method:  'post',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name: name }),
+        body:    JSON.stringify(body),
     });
 };
