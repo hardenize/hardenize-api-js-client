@@ -88,7 +88,7 @@ api.config({ pass: 'foo', org: null }); // Change pass to foo and delete org
 
 #### getCerts(options)
 
-See https://www.hardenize.com/docs/api/v0/#list-certificates
+See https://www.hardenize.com/docs/api/v1/#list-certificates
 
 Example. Fetch all active certificates that have not yet expired, but will expire within the next 30 days.
 
@@ -98,7 +98,7 @@ const { data: { certs } } = await api.getCerts({ active: true, expired: false, e
 
 #### getCert(sha256)
 
-See https://www.hardenize.com/docs/api/v0/#retrieve-a-certificate
+See https://www.hardenize.com/docs/api/v1/#retrieve-certificate
 
 Example. Fetch a certificate with a particular SHA256.
 
@@ -108,7 +108,7 @@ const { data: { cert } } = await api.getCert('3c8031d6af1dc0a557381318692f0d4ecb
 
 #### addCert(pem)
 
-See https://www.hardenize.com/docs/api/v0/#create-a-certificate
+See https://www.hardenize.com/docs/api/v1/#create-certificate
 
 Example. Add a certificate with a particular PEM
 
@@ -121,11 +121,11 @@ switch (res.status) {
 }
 ```
 
-#### addDnsZone(root, zoneBody, options)
+#### addDnsZone(root, zoneBody)
 
-See https://www.hardenize.com/docs/api/v0/#update-dns-zone
+See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
 
-Example. Add a dns zone for "example.com", setting the status of all found hosts to `idle`:
+Example. Add a dns zone for "example.com"
 
 ```js
 const zoneBody = `$ORIGIN example.com.
@@ -140,7 +140,7 @@ ns     IN  A     192.0.2.2
 www    IN  CNAME example.com.
 mx     IN  A     192.0.2.3`;
 
-await api.addDnsZone('example.com', zoneBody, { status: 'idle' });
+await api.addDnsZone('example.com', zoneBody);
 ```
 
 #### getTags()
