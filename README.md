@@ -258,6 +258,61 @@ const { data: { summaries } } = await api.getReports0({
 });
 ```
 
+#### getOrgs()
+
+See https://www.hardenize.com/docs/api/v1/#list-organizations
+
+Fetch a list of organizations.
+
+Example:
+
+```js
+const { data: { orgs } } = await api.getOrgs();
+```
+
+#### addOrg(id, options)
+
+See https://www.hardenize.com/docs/api/v1/#create-organization
+
+Add an organization to your account.
+
+Example: Create an organization with an id of `example`, a display name
+of `Example Ltd`. Set its initial status to `dormant`, and generate api credentials for it.
+
+```js
+const { data: { org } } = await api.addOrg('example', {
+    name:                   'Example Ltd',
+    status:                 'dormant',
+    generateApiCredentials: true,
+});
+```
+
+#### updateOrg
+
+See https://www.hardenize.com/docs/api/v1/#update-organization
+
+Update an organization in your account.
+
+Example: Update the status of an organization to `active`
+
+```js
+const { data: { org } } = await api.updateOrg('example', {
+    status: 'active',
+});
+```
+
+#### deleteOrg
+
+See https://www.hardenize.com/docs/api/v1/#delete-organization
+
+Delete an organization from your account.
+
+Example:
+
+```js
+await api.deleteOrg('example');
+```
+
 ### Development
 
 If you are a core developer of this library (you almost certainly aren't, unless you work for
