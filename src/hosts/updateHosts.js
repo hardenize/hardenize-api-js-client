@@ -1,8 +1,9 @@
-module.exports = function updateHosts(names, options){
+module.exports = function updateHosts(hostnames, changes, options){
     if (!options) options = {};
 
     var body = {
-        names: names,
+        hostnames: hostnames,
+        changes:   changes,
     };
 
     Object.keys(options).forEach(function(name){

@@ -160,7 +160,7 @@ See https://www.hardenize.com/docs/api/v1/#create-group
 Create a new group
 
 ```js
-await api.addTag('groupid', { name: 'Group Name' });
+await api.addGroup('groupid', { name: 'Group Name' });
 ```
 
 #### deleteGroup(id, options)
@@ -200,7 +200,7 @@ Fetch details about a host
 const { data: { host } } = await api.getHost('example.com');
 ```
 
-#### addHosts(names, options)
+#### addHosts(hostnames, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-hosts
 
@@ -209,29 +209,30 @@ Create new hosts
 ```js
 await api.addHosts([ 'example.com', 'example.org' ], {
     status: 'monitored',
-    tags:   ['Production'],
+    groups: ['Production'],
 });
 ```
 
-#### updateHosts(names, options)
+#### updateHosts(hostnames, changes, options)
 
 See https://www.hardenize.com/docs/api/v1/#update-hosts
 
 Update hosts.
 
 Example: Update example.com, example.org and all hosts that are subdomains of those two
-hostnames. Set their statuses to 'idle', and add a tag named "New" to each of them.
+hostnames. Set their statuses to 'idle', and add a group named "New" to each of them.
 
 ```js
 await api.updateHosts([ 'example.com', 'example.org' ], {
+    status:  'idle',
+    groups:  ['New'],
+    groupOp: 'add',
+}, {
     subdomains: true,
-    status:    'idle',
-    tags:      ['New'],
-    tagOp:     'add',
 });
 ```
 
-#### deleteHosts(names, options)
+#### deleteHosts(hostnames, options)
 
 See https://www.hardenize.com/docs/api/v1/#delete-hosts
 
@@ -248,13 +249,13 @@ See https://www.hardenize.com/docs/api/v1/#list-report-summaries
 Fetch a list of reports.
 
 Example: Fetch a list of reports for `example.com` and it's subdomains. Only
-include those with the `production` tag.
+include those with the `production` group.
 
 ```js
 const { data: { reports } } = await api.getReports0({
     name:       'example.com',
     subdomains: true,
-    tag:        'production'
+    group:      'production'
 });
 ```
 

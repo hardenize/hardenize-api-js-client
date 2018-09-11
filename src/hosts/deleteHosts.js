@@ -1,6 +1,6 @@
-module.exports = function deleteHosts(names, options){
+module.exports = function deleteHosts(hostnames, options){
     var body = {
-        names: names,
+        hostnames: hostnames,
     };   
     if (typeof options === 'object' && options !== null) {
         if (options.hasOwnProperty('preview')) body.preview = options.preview;
