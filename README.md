@@ -143,41 +143,41 @@ mx     IN  A     192.0.2.3`;
 await api.addDnsZone('example.com', zoneBody);
 ```
 
-#### getTags()
+#### getGroups()
 
-See https://www.hardenize.com/docs/api/v1/#list-tags
+See https://www.hardenize.com/docs/api/v1/#list-groups
 
-Fetch a list of tags.
-
-```js
-const { data: { tags } } = await api.getTags();
-```
-
-#### addTag(tag)
-
-See https://www.hardenize.com/docs/api/v1/#create-tag
-
-Create a new tag
+Fetch a list of groups.
 
 ```js
-await api.addTag('TagName');
+const { data: { groups } } = await api.getGroups();
 ```
 
-#### deleteTag(tag, options)
+#### addGroup(id, options)
 
-See https://www.hardenize.com/docs/api/v1/#delete-tag
+See https://www.hardenize.com/docs/api/v1/#create-group
 
-Delete a tag
+Create a new group
 
 ```js
-await api.deleteTag('TagName');
+await api.addTag('groupid', { name: 'Group Name' });
 ```
 
-This will fail if the tag is in use. If you want to force removal even if the tag is in use,
+#### deleteGroup(id, options)
+
+See https://www.hardenize.com/docs/api/v1/#delete-group
+
+Delete a group
+
+```js
+await api.deleteGroup('groupid');
+```
+
+This will fail if the group is in use. If you want to force removal even if the group is in use,
 pass an additional object with `force` set to true:
 
 ```js
-await api.deleteTag('TagName', { force: true });
+await api.deleteGroup('groupid', { force: true });
 ```
 
 #### getHosts(options)
