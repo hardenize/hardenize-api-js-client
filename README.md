@@ -259,7 +259,7 @@ const { data: { reports } } = await api.getReports0({
 });
 ```
 
-#### getOrgs()
+#### getSubOrgs()
 
 See https://www.hardenize.com/docs/api/v1/#list-organizations
 
@@ -268,10 +268,10 @@ Fetch a list of organizations.
 Example:
 
 ```js
-const { data: { orgs } } = await api.getOrgs();
+const { data: { orgs } } = await api.getSubOrgs();
 ```
 
-#### addOrg(id, options)
+#### addSubOrg(id, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-organization
 
@@ -281,14 +281,14 @@ Example: Create an organization with an id of `example`, a display name
 of `Example Ltd`. Set its initial status to `dormant`, and generate api credentials for it.
 
 ```js
-const { data: { org } } = await api.addOrg('example', {
+const { data: { org } } = await api.addSubOrg('example', {
     name:                   'Example Ltd',
     status:                 'dormant',
     generateApiCredentials: true,
 });
 ```
 
-#### updateOrg
+#### updateSubOrg
 
 See https://www.hardenize.com/docs/api/v1/#update-organization
 
@@ -297,12 +297,12 @@ Update an organization in your account.
 Example: Update the status of an organization to `active`
 
 ```js
-const { data: { org } } = await api.updateOrg('example', {
+const { data: { org } } = await api.updateSubOrg('example', {
     status: 'active',
 });
 ```
 
-#### deleteOrg
+#### deleteSubOrg
 
 See https://www.hardenize.com/docs/api/v1/#delete-organization
 
@@ -311,7 +311,7 @@ Delete an organization from your account.
 Example:
 
 ```js
-await api.deleteOrg('example');
+await api.deleteSubOrg('example');
 ```
 
 ### Development
