@@ -106,26 +106,26 @@ Example. Fetch a certificate with a particular SHA256.
 const { data: { cert } } = await api.getCert('3c8031d6af1dc0a557381318692f0d4ecb74508e2116d489fec9dcc16a0f1552');
 ```
 
-#### addCert(pem)
+#### createCert(pem)
 
 See https://www.hardenize.com/docs/api/v1/#create-certificate
 
-Example. Add a certificate with a particular PEM
+Example. Create a certificate with a particular PEM
 
 ```js
-const { res, data: { sha256 } } = await api.addCert('some pem content');
+const { res, data: { sha256 } } = await api.createCert('some pem content');
 switch (res.status) {
-    case 201: console.log('Certificate added',           sha256); break;
+    case 201: console.log('Certificate created',         sha256); break;
     case 202: console.log('Certificate already existed', sha256); break;
     default: // Should not get as far as this
 }
 ```
 
-#### addDnsZone(root, zoneBody)
+#### createDnsZone(root, zoneBody)
 
 See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
 
-Example. Add a dns zone for "example.com"
+Example. Create a dns zone for "example.com"
 
 ```js
 const zoneBody = `$ORIGIN example.com.
@@ -140,7 +140,7 @@ ns     IN  A     192.0.2.2
 www    IN  CNAME example.com.
 mx     IN  A     192.0.2.3`;
 
-await api.addDnsZone('example.com', zoneBody);
+await api.createDnsZone('example.com', zoneBody);
 ```
 
 #### getGroups()
@@ -153,14 +153,14 @@ Fetch a list of groups.
 const { data: { groups } } = await api.getGroups();
 ```
 
-#### addGroup(id, options)
+#### createGroup(id, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-group
 
 Create a new group
 
 ```js
-await api.addGroup('groupid', { name: 'Group Name' });
+await api.createGroup('groupid', { name: 'Group Name' });
 ```
 
 #### deleteGroup(id, options)
@@ -200,14 +200,14 @@ Fetch details about a host
 const { data: { host } } = await api.getHost('example.com');
 ```
 
-#### addHosts(hostnames, options)
+#### createHosts(hostnames, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-hosts
 
 Create new hosts
 
 ```js
-await api.addHosts([ 'example.com', 'example.org' ], {
+await api.createHosts([ 'example.com', 'example.org' ], {
     status: 'monitored',
     groups: ['Production'],
 });
@@ -271,17 +271,17 @@ Example:
 const { data: { orgs } } = await api.getSubOrgs();
 ```
 
-#### addSubOrg(id, options)
+#### createSubOrg(id, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-organization
 
-Add an organization to your account.
+Create a sub organization to your account.
 
 Example: Create an organization with an id of `example`, a display name
 of `Example Ltd`. Set its initial status to `dormant`, and generate api credentials for it.
 
 ```js
-const { data: { org } } = await api.addSubOrg('example', {
+const { data: { org } } = await api.createSubOrg('example', {
     name:                   'Example Ltd',
     status:                 'dormant',
     generateApiCredentials: true,

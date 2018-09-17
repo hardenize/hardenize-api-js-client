@@ -1,4 +1,4 @@
-module.exports = function addGroup(id, options){
+module.exports = function createGroup(id, options){
 
     var body = {
         id: id,

@@ -1,4 +1,4 @@
-module.exports = function addHosts(hostnames, options){
+module.exports = function createHosts(hostnames, options){
     var body = {
         hostnames: hostnames,
     };

@@ -1,4 +1,4 @@
-module.exports = function addCert(pem){
+module.exports = function createCert(pem){
 
     if (typeof pem !== 'string') pem = '';
     pem = pem.trim();

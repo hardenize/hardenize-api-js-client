@@ -1,4 +1,4 @@
-module.exports = function addSubOrg(id, options){
+module.exports = function createSubOrg(id, options){
     if (typeof options === 'undefined' || options === null) options = {};
 
     var body = {
