@@ -294,11 +294,12 @@ See https://www.hardenize.com/docs/api/v1/#update-organization
 
 Update an organization in your account.
 
-Example: Update the status of an organization to `active`
+Example: Update the status of an organization to `active` and regenerate it's API credentials
 
 ```js
 const { data: { org } } = await api.updateSubOrg('example', {
-    status: 'active',
+    status:                 'active',
+    generateApiCredentials: true,
 });
 ```
 
