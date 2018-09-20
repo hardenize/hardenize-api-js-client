@@ -152,7 +152,16 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
 
         var isJson = !!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
 
-        return res[isJson ? 'json' : 'text']().then(function(body){
+        return res.text().then(function(body){
+            self.emit('body', body);
+            if (isJson) {
+                try {
+                    body = JSON.parse(body);
+                } catch(err) {
+                    return Promise.reject(err);
+                }
+            }
+
             var badStatus = res.status >= 400;
 
             if (validStatus) {

@@ -67,15 +67,18 @@ For tracing/debugging, it can sometimes be useful to track all API requests sent
 ```js
 const api = new HardenizeApi({ ...options });
 
-const onRequest  = req => console.log("Sending API request",   req);
-const onResponse = res => console.log("Received API response", res);
+const onRequest      = req  => console.log("Sending API request",        req);
+const onResponse     = res  => console.log("Received API response",      res);
+const onResponseBody = body => console.log("Received API response body", body);
 
 api.addEventListener('request',  onRequest);
 api.addEventListener('response', onResponse);
+api.addEventListener('body',     onResponseBody);
 
 // Or:
 api.on('request',  onRequest);
 api.on('response', onResponse);
+api.on('body',     onResponseBody);
 ```
 
 To remove the event listeners:
@@ -83,10 +86,12 @@ To remove the event listeners:
 ```js
 api.removeEventListener('request',  onRequest);
 api.removeEventListener('response', onResponse);
+api.removeEventListener('body',     onResponseBody);
 
 // Or:
 api.off('request',  onRequest);
 api.off('response', onResponse);
+api.off('body',     onResponseBody);
 ```
 
 If you want to remove all of the event listeners of a particular type, just don't pass the callback function argument:
@@ -94,12 +99,13 @@ If you want to remove all of the event listeners of a particular type, just don'
 ```js
 api.removeEventListener('request');
 api.removeEventListener('response');
+api.removeEventListener('body');
 
 // Or:
 api.off('request');
 api.off('response');
+api.off('body');
 ```
-
 
 ### Methods
 
