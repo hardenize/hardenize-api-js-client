@@ -1,11 +1,13 @@
 var fetch   = typeof window === 'undefined' ? require('node-fetch') : window.fetch;
 var Headers = fetch.Headers || global.Headers;
+var Request = fetch.Request || global.Request;
 
 var API_VERSION = 1;
 
 function HardenizeApi(config) {
     if (!config) config = {};
 
+    this.__eventListeners = {};
     this.__config = {};
     if (config.hasOwnProperty('org'))  this.__config.org  = config.org;
     if (config.hasOwnProperty('user')) this.__config.user = config.user;
@@ -39,6 +41,31 @@ HardenizeApi.prototype.config = function config(name, value){
         this.__config[name] = value;
     } else {
         return this.__config[name];
+    }
+};
+
+HardenizeApi.prototype.addEventListener = HardenizeApi.prototype.on = function(type, callback) {
+    this.__eventListeners[type] = this.__eventListeners[type] || [];
+    this.__eventListeners[type].push(callback);
+    return this;
+};
+
+HardenizeApi.prototype.removeEventListener = HardenizeApi.prototype.off = function(type, callback) {
+    if (typeof callback === 'undefined') {
+        delete this.__eventListeners[type]
+    } else if (this.__eventListeners[type]) {
+        this.__eventListeners[type] = this.__eventListeners[type].filter(function(c){
+            return c !== callback;
+        });
+        if (this.__eventListeners[type].length === 0) delete this.__eventListeners[type];
+    }
+    return this;
+};
+
+HardenizeApi.prototype.emit = function(type, data) {
+    if (!this.__eventListeners[type]) return;
+    for (var i = 0; i < this.__eventListeners[type].length; ++i) {
+        this.__eventListeners[type][i].call(this, data);
     }
 };
 
@@ -116,7 +143,12 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
         fetchOptions.headers.set('Authorization', 'Basic ' + base64(this.__config.user + ':' + this.__config.pass));
     }
 
-    return fetch(url, fetchOptions).then(function(res){
+    var req = new Request(url, fetchOptions);
+    this.emit('request', req);
+
+    var self = this;
+    return fetch(req).then(function(res){
+        self.emit('response', res);
 
         var isJson = !!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
 

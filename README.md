@@ -60,6 +60,47 @@ A basic example:
 The above example uses `async`, `await` and appropriate error handling. The remainder of the examples
 in this documentation will drop suitable error handling and ignore the `async` wrapper, for brevity.
 
+### Events
+
+For tracing/debugging, it can sometimes be useful to track all API requests sent and responses received. You can add listeners for these events on a HardenizeAPI object. Your callback will be passed a Request or Response object as an argument. Examples:
+
+```js
+const api = new HardenizeApi({ ...options });
+
+const onRequest  = req => console.log("Sending API request",   req);
+const onResponse = res => console.log("Received API response", res);
+
+api.addEventListener('request',  onRequest);
+api.addEventListener('response', onResponse);
+
+// Or:
+api.on('request',  onRequest);
+api.on('response', onResponse);
+```
+
+To remove the event listeners:
+
+```js
+api.removeEventListener('request',  onRequest);
+api.removeEventListener('response', onResponse);
+
+// Or:
+api.off('request',  onRequest);
+api.off('response', onResponse);
+```
+
+If you want to remove all of the event listeners of a particular type, just don't pass the callback function argument:
+
+```js
+api.removeEventListener('request');
+api.removeEventListener('response');
+
+// Or:
+api.off('request');
+api.off('response');
+```
+
+
 ### Methods
 
 #### version()
