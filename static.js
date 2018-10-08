@@ -18,13 +18,13 @@ module.exports=function(t){var a={};return"object"==typeof t&&null!==t&&Object.k
 module.exports=function(t,o){if("string"!=typeof t)throw"Invalid root param";if("string"!=typeof o)throw"Invalid zone body param";return this.apiCall({path:"dns/zones/",validStatus:204},{method:"post",headers:{"Content-Type":"text/plain"},body:o},{root:t})};
 
 },{}],7:[function(require,module,exports){
-module.exports=function(t){switch(typeof t){case"string":case"number":break;default:throw"Invalid ID"}return this.apiCall({path:"events/"+encodeURIComponent(t),validStatus:200}).then(function(t){try{t.data.event.data=JSON.parse(t.data.event.data)}catch(t){}return t})};
+module.exports=function(e){switch(typeof e){case"string":case"number":break;default:throw"Invalid ID"}return this.apiCall({path:"events/"+encodeURIComponent(e),validStatus:200})};
 
 },{}],8:[function(require,module,exports){
 module.exports=function(){return this.apiCall({path:"eventTypes/",validStatus:200},{})};
 
 },{}],9:[function(require,module,exports){
-module.exports=function(t){return this.apiCall({path:"events/",validStatus:200},{},t).then(function(t){return t.data.events.forEach(function(t){try{t.data=JSON.parse(t.data)}catch(t){}}),t})};
+module.exports=function(t){return this.apiCall({path:"events/",validStatus:200},{},t)};
 
 },{}],10:[function(require,module,exports){
 module.exports=function(t,e){return this.apiCall({path:"eventTypes/"+encodeURIComponent(t),validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)})};
