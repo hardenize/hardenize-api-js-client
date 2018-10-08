@@ -362,6 +362,52 @@ Example:
 await api.deleteSubOrg('example');
 ```
 
+#### getEventTypes()
+
+See https://staging.hardenize.net/docs/api/v1/#list-event-types
+
+Fetch a list of event types
+
+Example:
+
+```js
+await api.getEventTypes();
+```
+
+#### updateEventType(name, options)
+
+See https://staging.hardenize.net/docs/api/v1/#update-event-type
+
+Update an event type.
+
+Example: Disabling the "example.type" event type:
+
+```js
+await api.updateEventType('example.type', { enabled: false });
+```
+
+#### getEvents(options)
+
+See https://staging.hardenize.net/docs/api/v1/#list-events
+
+Get a list of events.
+
+Example: Fetch a list of events (up to a max of 3), that have occured since a particular date/time, for a particular type only.
+
+```js
+await api.getEvents({ type: 'example.type', since: '2018-06-20T12:05:12.123456Z', limit: 3 });
+```
+
+#### getEvent(id)
+
+See https://staging.hardenize.net/docs/api/v1/#get-event
+
+Example:
+
+```js
+await api.getEvent(5);
+```
+
 ### Development
 
 If you are a core developer of this library (you almost certainly aren't, unless you work for

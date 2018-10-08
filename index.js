@@ -69,23 +69,27 @@ HardenizeApi.prototype.emit = function(type, data) {
     }
 };
 
-HardenizeApi.prototype.getCerts      = endpoint(require('./src/certs/getCerts'));
-HardenizeApi.prototype.getCert       = endpoint(require('./src/certs/getCert'));
-HardenizeApi.prototype.createCert    = endpoint(require('./src/certs/createCert'));
-HardenizeApi.prototype.createDnsZone = endpoint(require('./src/dns_zones/createDnsZone'));
-HardenizeApi.prototype.getGroups     = endpoint(require('./src/groups/getGroups'));
-HardenizeApi.prototype.createGroup   = endpoint(require('./src/groups/createGroup'));
-HardenizeApi.prototype.deleteGroup   = endpoint(require('./src/groups/deleteGroup'));
-HardenizeApi.prototype.getHosts      = endpoint(require('./src/hosts/getHosts'));
-HardenizeApi.prototype.getHost       = endpoint(require('./src/hosts/getHost'));
-HardenizeApi.prototype.createHosts   = endpoint(require('./src/hosts/createHosts'));
-HardenizeApi.prototype.updateHosts   = endpoint(require('./src/hosts/updateHosts'));
-HardenizeApi.prototype.deleteHosts   = endpoint(require('./src/hosts/deleteHosts'));
-HardenizeApi.prototype.getSubOrgs    = endpoint(require('./src/suborgs/getSubOrgs'));
-HardenizeApi.prototype.createSubOrg  = endpoint(require('./src/suborgs/createSubOrg'));
-HardenizeApi.prototype.deleteSubOrg  = endpoint(require('./src/suborgs/deleteSubOrg'));
-HardenizeApi.prototype.updateSubOrg  = endpoint(require('./src/suborgs/updateSubOrg'));
-HardenizeApi.prototype.getReports0   = endpoint(require('./src/reports0/getReports'));
+HardenizeApi.prototype.getCerts        = endpoint(require('./src/certs/getCerts'));
+HardenizeApi.prototype.getCert         = endpoint(require('./src/certs/getCert'));
+HardenizeApi.prototype.createCert      = endpoint(require('./src/certs/createCert'));
+HardenizeApi.prototype.createDnsZone   = endpoint(require('./src/dns_zones/createDnsZone'));
+HardenizeApi.prototype.getGroups       = endpoint(require('./src/groups/getGroups'));
+HardenizeApi.prototype.createGroup     = endpoint(require('./src/groups/createGroup'));
+HardenizeApi.prototype.deleteGroup     = endpoint(require('./src/groups/deleteGroup'));
+HardenizeApi.prototype.getHosts        = endpoint(require('./src/hosts/getHosts'));
+HardenizeApi.prototype.getHost         = endpoint(require('./src/hosts/getHost'));
+HardenizeApi.prototype.createHosts     = endpoint(require('./src/hosts/createHosts'));
+HardenizeApi.prototype.updateHosts     = endpoint(require('./src/hosts/updateHosts'));
+HardenizeApi.prototype.deleteHosts     = endpoint(require('./src/hosts/deleteHosts'));
+HardenizeApi.prototype.getSubOrgs      = endpoint(require('./src/suborgs/getSubOrgs'));
+HardenizeApi.prototype.createSubOrg    = endpoint(require('./src/suborgs/createSubOrg'));
+HardenizeApi.prototype.deleteSubOrg    = endpoint(require('./src/suborgs/deleteSubOrg'));
+HardenizeApi.prototype.updateSubOrg    = endpoint(require('./src/suborgs/updateSubOrg'));
+HardenizeApi.prototype.getReports0     = endpoint(require('./src/reports0/getReports'));
+HardenizeApi.prototype.getEventTypes   = endpoint(require('./src/events/getEventTypes'));
+HardenizeApi.prototype.updateEventType = endpoint(require('./src/events/updateEventType'));
+HardenizeApi.prototype.getEvents       = endpoint(require('./src/events/getEvents'));
+HardenizeApi.prototype.getEvent        = endpoint(require('./src/events/getEvent'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
