@@ -90,6 +90,11 @@ HardenizeApi.prototype.getEventTypes   = endpoint(require('./src/events/getEvent
 HardenizeApi.prototype.updateEventType = endpoint(require('./src/events/updateEventType'));
 HardenizeApi.prototype.getEvents       = endpoint(require('./src/events/getEvents'));
 HardenizeApi.prototype.getEvent        = endpoint(require('./src/events/getEvent'));
+HardenizeApi.prototype.getEventHooks   = endpoint(require('./src/events/getEventHooks'));
+HardenizeApi.prototype.createEventHook = endpoint(require('./src/events/createEventHook'));
+HardenizeApi.prototype.deleteEventHook = endpoint(require('./src/events/deleteEventHook'));
+HardenizeApi.prototype.updateEventHook = endpoint(require('./src/events/updateEventHook'));
+HardenizeApi.prototype.testEventHook   = endpoint(require('./src/events/testEventHook'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;

@@ -364,7 +364,7 @@ await api.deleteSubOrg('example');
 
 #### getEventTypes()
 
-See https://staging.hardenize.net/docs/api/v1/#list-event-types
+See https://www.hardenize.com/docs/api/v1/#list-event-types
 
 Fetch a list of event types
 
@@ -376,7 +376,7 @@ await api.getEventTypes();
 
 #### updateEventType(name, options)
 
-See https://staging.hardenize.net/docs/api/v1/#update-event-type
+See https://www.hardenize.com/docs/api/v1/#update-event-type
 
 Update an event type.
 
@@ -388,7 +388,7 @@ await api.updateEventType('example.type', { enabled: false });
 
 #### getEvents(options)
 
-See https://staging.hardenize.net/docs/api/v1/#list-events
+See https://www.hardenize.com/docs/api/v1/#list-events
 
 Get a list of events.
 
@@ -400,12 +400,76 @@ await api.getEvents({ type: 'example.type', since: '2018-06-20T12:05:12.123456Z'
 
 #### getEvent(id)
 
-See https://staging.hardenize.net/docs/api/v1/#get-event
+See https://www.hardenize.com/docs/api/v1/#get-event
 
 Example:
 
 ```js
 await api.getEvent(5);
+```
+
+#### createEventHook(options)
+
+See https://www.hardenize.com/docs/api/v1/#create-event-hook
+
+Create an event hook.
+
+Example:
+
+```js
+const { eventHook } = await api.createEventHook({
+  hookType:    'webhook',
+  eventTypes:  ['ct.entry'],
+  destination: 'https://www.example.com/webhooks/receive',
+});
+```
+
+#### deleteEventHook(id)
+
+See https://www.hardenize.com/docs/api/v1/#delete-event-hook
+
+Delete an event hook.
+
+Example:
+
+```js
+await api.deleteEventHook('24673847d5cb283205568e34f8855ba2');
+```
+
+#### getEventHooks()
+
+See https://www.hardenize.com/docs/api/v1/#list-event-hooks
+
+Get a list of your event hooks.
+
+Example:
+
+```js
+const { eventHooks } = await api.getEventHooks();
+```
+
+#### testEventHook(id, options)
+
+See https://www.hardenize.com/docs/api/v1/#test-event-hook
+
+Test an event hook.
+
+Example: Test with an invalid signature
+
+```js
+const result = await api.testEventHook('24673847d5cb283205568e34f8855ba2', { invalid: 'signature' });
+```
+
+#### updateEventHook(id, changes)
+
+See https://www.hardenize.com/docs/api/v1/#update-event-hook
+
+Update an event hook.
+
+Example: Set the status to enabled
+
+```js
+const { eventHook } = await api.updateEventHook('24673847d5cb283205568e34f8855ba2', { status: 'enabled' });
 ```
 
 ### Development
