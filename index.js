@@ -12,6 +12,7 @@ function HardenizeApi(config) {
     if (config.hasOwnProperty('org'))  this.__config.org  = config.org;
     if (config.hasOwnProperty('user')) this.__config.user = config.user;
     if (config.hasOwnProperty('pass')) this.__config.pass = config.pass;
+    if (config.hasOwnProperty('legacy_path')) this.__config.legacy_path = config.legacy_path;
     this.__config.url = config.hasOwnProperty('url') ? config.url : 'https://api.hardenize.com';
 }
 
@@ -122,7 +123,14 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
         path        = path.path;
     }
 
-    var url = this.__config.url + '/org/' + this.__config.org + '/v' + API_VERSION + '/' + path.replace(/^\/+/,'');
+    var url = [
+        this.__config.url,
+        '/org/',
+        this.__config.org,
+        this.__config.legacy_path ? '/api/' : '/',
+        'v' + API_VERSION + '/',
+        path.replace(/^\/+/,''),
+    ].join('');
 
     if (typeof qsOptions === 'object' && qsOptions !== null) {
         var qs = Object.keys(qsOptions).reduce(function(o, name){

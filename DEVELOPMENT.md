@@ -5,13 +5,13 @@ you probably don't need to look at any of the options here as they are not relev
 
 ## Changing the API URL
 
-To change the API URL from `https://www.hardenize.com/org/demo/api/v0/something` to
-`https://www.example.com:8443/org/demo/api/v0/something`, you would pass an additional `url` parameter to
+To change the API URL from `https://api.hardenize.com/org/demo/v1/something` to
+`https://api.example.com:8443/org/demo/v1/something`, you would pass an additional `url` parameter to
 the constructor:
 
 ```js
 const api = new HardenizeApi({
-    url:  'https://www.example.com:8443',
+    url:  'https://api.example.com:8443',
     ...
 });
 ```
@@ -24,6 +24,18 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 ```
 
 DO NOT LET THIS CODE FIND IT'S WAY INTO PRODUCTION!!!
+
+When talking to a local dev environment, the URL path is slightly different because you don't have nginx
+in front of it and there are not different URLs for www vs api. In that situation you should set
+`legacy_path` to be true and URL paths will be constructed like `/org/demo/api/v1/something` instead of
+`/org/demo/v1/something`:
+
+```js
+const api = new HardenizeApi({
+    legacy_path: true,
+    ...
+});
+```
 
 ## Wrapping API calls
 
