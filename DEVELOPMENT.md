@@ -5,34 +5,19 @@ you probably don't need to look at any of the options here as they are not relev
 
 ## Changing the API URL
 
-To change the API URL from `https://api.hardenize.com/org/demo/v1/something` to
-`https://api.example.com:8443/org/demo/v1/something`, you would pass an additional `url` parameter to
-the constructor:
+To point the API at your local dev environment you need to change four things:
 
-```js
-const api = new HardenizeApi({
-    url:  'https://api.example.com:8443',
-    ...
-});
-```
+1. Change the hostname from api.hardenize.com to local.hardenizer.com
+2. Change the port from 443 to 8443
+3. Disable TLS validation (due to a self signed cert)
+4. Change the path format from /org/$org/v1/endPoint to /org/$org/api/v1/endPoint
 
-If there is a self signed certificate involved, you will need to disable TLS validation globally inside the
-node process by running the following before you do any API calls:
+To do this:
 
 ```js
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-```
-
-DO NOT LET THIS CODE FIND IT'S WAY INTO PRODUCTION!!!
-
-When talking to a local dev environment, the URL path is slightly different because you don't have nginx
-in front of it and there are not different URLs for www vs api. In that situation you should set
-`legacy_path` to be true and URL paths will be constructed like `/org/demo/api/v1/something` instead of
-`/org/demo/v1/something`:
-
-```js
 const api = new HardenizeApi({
-    legacy_path: true,
+    url:  'https://local.hardenizer.com:8443/org/{org}/api/',
     ...
 });
 ```
