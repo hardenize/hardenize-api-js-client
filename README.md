@@ -472,6 +472,18 @@ Example: Set the status to enabled
 const { eventHook } = await api.updateEventHook('24673847d5cb283205568e34f8855ba2', { status: 'enabled' });
 ```
 
+#### updateUser(id, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-user
+
+Update user.
+
+Example: Disable MFA for user id 1.
+
+```js
+await api.updateUser(1, { disableMfa: true });
+```
+
 ### Development
 
 If you are a core developer of this library (you almost certainly aren't, unless you work for
