@@ -481,7 +481,7 @@ Update user.
 Example: Disable MFA for user id 1.
 
 ```js
-await api.updateUser(1, { disableMfa: true });
+await api.updateUser(1, { deleteMfa: true });
 ```
 
 ### Development
