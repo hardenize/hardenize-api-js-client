@@ -124,10 +124,11 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
     }
 
     var url = this.__config.url.match(/^https?:\/\/[^\/]+\/*$/i)
-        ? this.__config.url.replace(/\/+$/, '') + '/org/' + this.__config.org
-        : this.__config.url.replace(/\{org\}/g, this.__config.org);
+        ? this.__config.url.replace(/\/+$/, '') + '/v' + API_VERSION + '/org/' + this.__config.org
+        : this.__config.url.replace(/\{org\}/g, this.__config.org)
+            .replace(/\/+$/, '') + '/v' + API_VERSION;
 
-    url = url.replace(/\/+$/, '') + '/v' + API_VERSION + '/' + path.replace(/^\/+/,'');
+    url += '/' + path.replace(/^\/+/,'');
 
     if (typeof qsOptions === 'object' && qsOptions !== null) {
         var qs = Object.keys(qsOptions).reduce(function(o, name){
