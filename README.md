@@ -448,6 +448,18 @@ Example:
 const { eventHooks } = await api.getEventHooks();
 ```
 
+#### getEventHookDestinations()
+
+See https://www.hardenize.com/docs/api/v1/#list-event-destinations
+
+Get a list of your event hook destinations.
+
+Example:
+
+```js
+const { eventDestinations } = await api.getEventHookDestinations();
+```
+
 #### testEventHook(id, options)
 
 See https://www.hardenize.com/docs/api/v1/#test-event-hook
