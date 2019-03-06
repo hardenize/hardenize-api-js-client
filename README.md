@@ -289,6 +289,119 @@ Delete hosts
 await api.deleteHosts([ 'example.com', 'example.org' ]);
 ```
 
+#### getHostDiscoveries()
+
+See https://www.hardenize.com/docs/api/v1/#list-host-discoveries
+
+Gets a list of host discoveries.
+
+Example: Fetch keyword related pending discoveries.
+
+```js
+const { data: { hostDiscoveries } } = await api.getHostDiscoveries({
+    triageResolution: 'pending',
+    matchReason:      'keyword',
+});
+```
+
+#### getHostDiscovery(id)
+
+See https://www.hardenize.com/docs/api/v1/#retrieve-host-discovery
+
+Retrieves a host discovery, by ID. Id's can be seen in the results of
+calling getHostDiscoveries().
+
+```js
+const { data: { hostDiscovery } } = await api.getHostDiscovery(id);
+```
+
+#### updateHostDiscovery(id, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-host-discovery
+
+Updates an existing host discovery. Allows setting the triage resolution
+and effective hostname.
+
+```js
+await api.updateHostDiscovery(id, {
+    triageResolution: 'own',
+    effectiveHostname: 'hardenize.com',
+});
+```
+
+#### createHostDiscoveryKeyword(keyword, options)
+
+See https://www.hardenize.com/docs/api/v1/#create-host-discovery-keyword
+
+Create a new host discovery keyword.
+
+Example: Create a host discovery keyword of "hardenize", excluding matching
+hosts if they contain the substring "test" or are a subdomain of "example.com".
+
+```js
+await api.createHostDiscoveryKeyword('hardenize', {
+    exclusions: [{
+        type: 'substring',
+        exclusion: 'test',
+    }, {
+        type: 'subdomain',
+        exclusion: 'example.com',
+    }]
+});
+```
+
+#### deleteHostDiscoveryKeyword(keyword)
+
+See https://www.hardenize.com/docs/api/v1/#delete-host-discovery-keyword
+
+Delete a host discovery keyword.
+
+```js
+await api.deleteHostDiscoveryKeyword('hardenize');
+```
+
+#### getHostDiscoveryKeywords()
+
+See https://www.hardenize.com/docs/api/v1/#list-host-discovery-keywords
+
+Gets the list of host discovery keywords.
+
+```js
+const { data: { hostDiscoveryKeywords } } = await api.getHostDiscoveryKeywords();
+```
+
+#### getHostDiscoveryKeyword(keyword)
+
+See https://www.hardenize.com/docs/api/v1/#retrieve-host-discovery-keyword
+
+Gets a host discovery keyword.
+
+```js
+const { data: { hostDiscoveryKeyword } } = await api.getHostDiscoveryKeyword('hardenize');
+```
+
+#### updateHostDiscoveryKeyword(keyword, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-host-discovery-keyword
+
+Updates an existing host discovery keyword - the exclusions.
+
+Example: Add two new exclusions to the keyword "hardenize", matching hosts if they
+contain the substring "test" or are a subdomain of "example.com".
+
+```js
+await api.updateHostDiscoveryKeyword('hardenize', {
+    op: 'add',
+    exclusions: [{
+        type: 'substring',
+        exclusion: 'test',
+    }, {
+        type: 'subdomain',
+        exclusion: 'example.com',
+    }]
+});
+```
+
 #### getReports0(options)
 
 See https://www.hardenize.com/docs/api/v1/#list-report-summaries
