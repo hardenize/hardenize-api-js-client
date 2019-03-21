@@ -380,28 +380,6 @@ Gets a host discovery keyword.
 const { data: { hostDiscoveryKeyword } } = await api.getHostDiscoveryKeyword('hardenize');
 ```
 
-#### updateHostDiscoveryKeyword(keyword, options)
-
-See https://www.hardenize.com/docs/api/v1/#update-host-discovery-keyword
-
-Updates an existing host discovery keyword - the exclusions.
-
-Example: Add two new exclusions to the keyword "hardenize", matching hosts if they
-contain the substring "test" or are a subdomain of "example.com".
-
-```js
-await api.updateHostDiscoveryKeyword('hardenize', {
-    op: 'add',
-    exclusions: [{
-        type: 'substring',
-        exclusion: 'test',
-    }, {
-        type: 'subdomain',
-        exclusion: 'example.com',
-    }]
-});
-```
-
 #### getReports0(options)
 
 See https://www.hardenize.com/docs/api/v1/#list-report-summaries
