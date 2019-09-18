@@ -299,7 +299,7 @@ Example: Fetch keyword related pending discoveries.
 
 ```js
 const { data: { hostDiscoveries } } = await api.getHostDiscoveries({
-    triageResolution: 'pending',
+    resolution: 'pending',
     matchReason:      'keyword',
 });
 ```
@@ -324,8 +324,24 @@ and effective hostname.
 
 ```js
 await api.updateHostDiscovery(id, {
-    triageResolution: 'own',
+    resolution: 'own',
     effectiveHostname: 'hardenize.com',
+});
+```
+
+#### updateHostDiscoveries(ids, changes, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-host-discoveries
+
+Updates existing host discoveries. Allows setting the triage resolution.
+Supply the optional argument {"preview": true}, if you only want to
+see what would be changed.
+
+```js
+await api.updateHostDiscoveries(ids, {
+    resolution: 'own',
+}, {
+    preview: true,
 });
 ```
 
