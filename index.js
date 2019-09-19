@@ -85,6 +85,7 @@ HardenizeApi.prototype.getHostDiscoveries         = endpoint(require('./src/host
 HardenizeApi.prototype.getHostDiscovery           = endpoint(require('./src/host_discoveries/getHostDiscovery'));
 HardenizeApi.prototype.updateHostDiscovery        = endpoint(require('./src/host_discoveries/updateHostDiscovery'));
 HardenizeApi.prototype.updateHostDiscoveries      = endpoint(require('./src/host_discoveries/updateHostDiscoveries'));
+HardenizeApi.prototype.deleteHostDiscoveries      = endpoint(require('./src/host_discoveries/deleteHostDiscoveries'));
 HardenizeApi.prototype.getHostDiscoveryKeywords   = endpoint(require('./src/host_discovery_keywords/getHostDiscoveryKeywords'));
 HardenizeApi.prototype.getHostDiscoveryKeyword    = endpoint(require('./src/host_discovery_keywords/getHostDiscoveryKeyword'));
 HardenizeApi.prototype.createHostDiscoveryKeyword = endpoint(require('./src/host_discovery_keywords/createHostDiscoveryKeyword'));

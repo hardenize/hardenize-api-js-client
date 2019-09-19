@@ -345,6 +345,19 @@ await api.updateHostDiscoveries(ids, {
 });
 ```
 
+#### deleteHostDiscoveries(ids, options)
+
+See https://www.hardenize.com/docs/api/v1/#delete-host-discoveries
+
+Deletes existing host discoveries. Supply the optional argument
+{"preview": true}, if you only want to see what would be deleted.
+
+```js
+await api.deleteHostDiscoveries(ids, {
+    preview: true,
+});
+```
+
 #### createHostDiscoveryKeyword(keyword, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-host-discovery-keyword
