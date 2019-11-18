@@ -409,6 +409,56 @@ Gets a host discovery keyword.
 const { data: { hostDiscoveryKeyword } } = await api.getHostDiscoveryKeyword('hardenize');
 ```
 
+#### createNetworkRange(networkRange, options)
+
+See https://www.hardenize.com/docs/api/v1/#create-network-range
+
+Create a new network range.
+
+Example: Create a network range of "192.168.100.0/24" and enable scanning
+
+```js
+await api.createNetworkRange('192.168.100.0/24', {
+    label: 'My Network Range',
+    description: 'A bunch of random hosts',
+    scan: true,
+});
+```
+
+#### deleteNetworkRange(networkRange)
+
+See https://www.hardenize.com/docs/api/v1/#delete-network-range
+
+Delete a network range.
+
+```js
+await api.deleteNetworkRange('192.168.100.0/24');
+```
+
+#### getNetworkRanges()
+
+See https://www.hardenize.com/docs/api/v1/#list-network-ranges
+
+Gets the list of network ranges.
+
+```js
+const { data: { networkRanges } } = await api.getNetworkRanges();
+```
+
+#### updateNetworkRange(networkRange, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-network-range
+
+Update a network range.
+
+Example: Disable scanning of "192.168.100.0/24"
+
+```js
+await api.updateNetworkRange('192.168.100.0/24', {
+    scan: false,
+});
+```
+
 #### getReports0(options)
 
 See https://www.hardenize.com/docs/api/v1/#list-report-summaries
