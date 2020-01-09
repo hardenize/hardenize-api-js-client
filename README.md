@@ -168,6 +168,29 @@ switch (res.status) {
 }
 ```
 
+#### getManagementIpWhitelist()
+
+See https://www.hardenize.com/docs/api/v1/#get-management-ip-whitelist-configuration
+
+Example. Fetch all active certificates that have not yet expired, but will expire within the next 30 days.
+
+```js
+const { data: config } = await api.getManagementIpWhitelist();
+```
+
+#### updateManagementIpWhitelist(changes)
+
+See https://www.hardenize.com/docs/api/v1/#update-management-ip-whitelist-configuration
+
+Example. Change the appNetworks config, leaving the apiNetworks config as it is.
+
+```js
+const { data: newConfig } = await api.updateManagementIpWhitelist({
+    appNetworks: ["127.0.0.0/8"],
+    appNetworksCascade: "enabled",
+});
+```
+
 #### createDnsZone(root, zoneBody)
 
 See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
