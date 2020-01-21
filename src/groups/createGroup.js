@@ -8,7 +8,7 @@ module.exports = function createGroup(id, options){
         if (options.hasOwnProperty('name')) body.name = options.name;
     }
 
-    return this.apiCall({ path: 'groups/', validStatus: 201 }, {
+    return this.apiCall({ url: 'groups/', validStatus: 201 }, {
         method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

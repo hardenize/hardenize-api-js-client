@@ -10,7 +10,7 @@ module.exports = function updateHosts(hostnames, changes, options){
         body[name] = options[name];
     });
     
-    return this.apiCall({ path: 'hosts/*/', validStatus: 200 }, {
+    return this.apiCall({ url: 'hosts/*/', validStatus: 200 }, {
         method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

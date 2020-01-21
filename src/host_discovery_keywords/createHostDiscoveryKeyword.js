@@ -6,7 +6,7 @@ module.exports = function createHostDiscoveryKeyword(keyword, options){
         if (options.hasOwnProperty('exclusions')) body.exclusions = options.exclusions;
     }
 
-    return this.apiCall({ path: 'hostDiscoveryKeywords/', validStatus: 200 }, {
+    return this.apiCall({ url: 'hostDiscoveryKeywords/', validStatus: 200 }, {
         method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

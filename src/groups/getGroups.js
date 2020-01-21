@@ -1,3 +1,3 @@
 module.exports = function getGroups(){
-    return this.apiCall({ path: 'groups/', validStatus: 200 });
+    return this.apiCall({ url: 'groups/', validStatus: 200 });
 };

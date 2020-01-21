@@ -4,5 +4,5 @@ module.exports = function getEvent(id){
         case 'number': break;
         default: throw 'Invalid ID';
     }
-    return this.apiCall({ path: 'events/' + encodeURIComponent(id), validStatus: 200 });
+    return this.apiCall({ url: 'events/' + encodeURIComponent(id), validStatus: 200 });
 };

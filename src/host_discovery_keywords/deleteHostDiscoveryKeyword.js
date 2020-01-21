@@ -1,5 +1,5 @@
 module.exports = function deleteHostDiscoveryKeyword(keyword){
-    return this.apiCall({ path: 'hostDiscoveryKeywords/' + encodeURIComponent(keyword), validStatus: 204 }, {
+    return this.apiCall({ url: 'hostDiscoveryKeywords/' + encodeURIComponent(keyword), validStatus: 204 }, {
         method: 'delete',
     });
 };

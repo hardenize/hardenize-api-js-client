@@ -7,7 +7,7 @@ module.exports = function createHosts(hostnames, options){
         if (options.hasOwnProperty('groups')) body.groups = options.groups;
     }
 
-    return this.apiCall({ path: 'hosts/', validStatus: 204 }, {
+    return this.apiCall({ url: 'hosts/', validStatus: 204 }, {
         method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

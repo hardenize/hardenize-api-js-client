@@ -1,3 +1,3 @@
 module.exports = function getManagementIpWhitelist(){
-    return this.apiCall({ path: 'config/managementIpWhitelist' });
+    return this.apiCall({ url: 'config/managementIpWhitelist' });
 };

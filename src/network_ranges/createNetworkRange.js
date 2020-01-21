@@ -6,7 +6,7 @@ module.exports = function createNetworkRange(networkRange, options){
     });
     body.range = networkRange;
 
-    return this.apiCall({ path: 'networkRanges/', validStatus: 201 }, {
+    return this.apiCall({ url: 'networkRanges/', validStatus: 201 }, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

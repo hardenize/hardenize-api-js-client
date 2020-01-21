@@ -9,7 +9,7 @@ module.exports = function createSubOrg(id, options){
         body[name] = options[name];
     });
 
-    return this.apiCall({ path: 'suborgs/', validStatus: 200 }, {
+    return this.apiCall({ url: 'suborgs/', validStatus: 200 }, {
         method:  'post',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

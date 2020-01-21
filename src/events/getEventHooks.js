@@ -1,3 +1,3 @@
 module.exports = function getEventHooks(){
-    return this.apiCall({ path: 'eventHooks/', validStatus: 200 });
+    return this.apiCall({ url: 'eventHooks/', validStatus: 200 });
 };

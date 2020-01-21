@@ -9,7 +9,7 @@ module.exports = function deleteHostDiscoveries(ids, options){
         body[name] = options[name];
     });
 
-    return this.apiCall({ path: 'hostDiscoveries/*/', validStatus: 200 }, {
+    return this.apiCall({ url: 'hostDiscoveries/*/', validStatus: 200 }, {
         method:  'delete',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),

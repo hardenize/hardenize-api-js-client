@@ -1,3 +1,3 @@
 module.exports = function getHostDiscoveryKeywords(){
-    return this.apiCall({ path: 'hostDiscoveryKeywords' });
+    return this.apiCall({ url: 'hostDiscoveryKeywords' });
 };

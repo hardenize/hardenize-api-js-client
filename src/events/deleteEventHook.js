@@ -1,3 +1,3 @@
 module.exports = function deleteEventHook(id){
-    return this.apiCall({ path: 'eventHooks/' + encodeURIComponent(id), validStatus: 204 }, { method: 'delete' });
+    return this.apiCall({ url: 'eventHooks/' + encodeURIComponent(id), validStatus: 204 }, { method: 'delete' });
 };

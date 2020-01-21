@@ -1,3 +1,3 @@
 module.exports = function getSubOrgs(){
-    return this.apiCall({ path: 'suborgs/', validStatus: 200 });
+    return this.apiCall({ url: 'suborgs/', validStatus: 200 });
 };
