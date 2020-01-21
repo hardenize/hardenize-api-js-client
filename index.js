@@ -69,6 +69,10 @@ HardenizeApi.prototype.emit = function(type, data) {
     }
 };
 
+HardenizeApi.prototype.getHdbCertBySha256          = endpoint(require('./src/hdb/certs/getHdbCertBySha256'));
+HardenizeApi.prototype.getHdbCertsByHostSuffix     = endpoint(require('./src/hdb/certs/getHdbCertsByHostSuffix'));
+HardenizeApi.prototype.getHdbCertsByKeyword        = endpoint(require('./src/hdb/certs/getHdbCertsByKeyword'));
+HardenizeApi.prototype.getHdbCertsBySpki           = endpoint(require('./src/hdb/certs/getHdbCertsBySpki'));
 HardenizeApi.prototype.getCerts                    = endpoint(require('./src/certs/getCerts'));
 HardenizeApi.prototype.getCert                     = endpoint(require('./src/certs/getCert'));
 HardenizeApi.prototype.createCert                  = endpoint(require('./src/certs/createCert'));
