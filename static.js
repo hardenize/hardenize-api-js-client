@@ -63,7 +63,7 @@ module.exports=function(e,t){return this.apiCall({url:"groups/"+encodeURICompone
 module.exports=function(){return this.apiCall({url:"groups/",validStatus:200})};
 
 },{}],22:[function(require,module,exports){
-module.exports=function(e,t){var r="hdb/certs/certBySha256/"+encodeURIComponent(e.toLowerCase());return t.pem&&(r+="?includePem=true"),this.apiCall({url:r,validStatus:200})};
+module.exports=function(e,t){var a="hdb/certs/certBySha256/"+encodeURIComponent(e.toLowerCase());return t&&t.unpacked&&(a+="?includeUnpacked=true"),this.apiCall({url:a,validStatus:200})};
 
 },{}],23:[function(require,module,exports){
 module.exports=function(e,i){var t={host:e};if("object"==typeof i&&null!==i&&(i.exact&&(t.includeExactMatch=!0),i.wildcard&&(t.includeWildcardMatch=!0),i.subdomains&&(t.includeSubDomains=!0)),1===Object.keys(t).length)throw new Error("No search filter options supplied");return i.pem&&(t.includePem=!0),i.expired&&(t.includeExpired=!0),i.limit&&(t.limit=i.limit),this.apiCall({url:"hdb/certs/certsByHostSuffix",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)})};
