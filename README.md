@@ -39,17 +39,16 @@ const api = new HardenizeApi({
 
 Once you have an api object, you can call a number of methods on it. Each one of them will return a `Promise`.
 
-Successful API calls are resolved with an object containing `data` and `res`, where data is the API response body, and `res` is the HTTP Response object. `res` exists, so that you can do things like checking the HTTP response status code.
-
 Failed API calls are rejected with an `Error` object containing the error message. It *MAY* also include a `res` HTTP Response object also if the call got as far as making a HTTP request and receiving a HTTP response.
 
-A basic example:
+Successful API calls are resolved with an object containing both a `fetchResults` function and a `pages` number. `pages` is the number of pages of results that can be retrieved, and exists due to pagination. When you call `fetchResults` it returns a Promise which resolves to an object containing `data` and `res`, where data is the API response body, and `res` is the HTTP Response object. `res` exists, so that you can do things like checking the HTTP response status code. You can call `fetchResults` with no arguments, to retrieve all results, or with a startPage and endPage number to only fetch a subset of the results. E.g:
 
 ```js
 (async () => {
     try {
-        const { data, res } = await api.getCerts();
-        console.log(data.certs);
+        const response      = await api.someApiCall(...someArgs);
+        const { data, res } = await response.fetchResults(1, response.pages);
+        const { data, res } = await response.fetchResults(); // Same as the above call
     } catch(err) {
         if (err.res) console.warn(`API Response Status: ${err.res.status} ${err.res.statusText}`);
         console.warn(err.message)
@@ -59,6 +58,9 @@ A basic example:
 
 The above example uses `async`, `await` and appropriate error handling. The remainder of the examples
 in this documentation will drop suitable error handling and ignore the `async` wrapper, for brevity.
+
+Not all of the Hardenize API end-points are async, or paginated, but this simple interface applies to
+all of the methods in this javascript library, so you don't have to differentiate.
 
 ### Events
 
@@ -150,7 +152,8 @@ See https://www.hardenize.com/docs/api/v1/#retrieve-certificate
 Example. Fetch a certificate with a particular SHA256.
 
 ```js
-const { data: { cert } } = await api.getCert('3c8031d6af1dc0a557381318692f0d4ecb74508e2116d489fec9dcc16a0f1552');
+const { data: { cert } } = await api.getCert('3c8031d6af1dc0a557381318692f0d4ecb74508e2116d489fec9dcc16a0f1552')
+    .then(response => response.fetchResults());
 ```
 
 #### createCert(pem)
@@ -160,7 +163,8 @@ See https://www.hardenize.com/docs/api/v1/#create-certificate
 Example. Create a certificate with a particular PEM
 
 ```js
-const { res, data: { sha256 } } = await api.createCert('some pem content');
+const { res, data: { sha256 } } = await api.createCert('some pem content')
+    .then(response => response.fetchResults());
 switch (res.status) {
     case 201: console.log('Certificate created',         sha256); break;
     case 202: console.log('Certificate already existed', sha256); break;
@@ -175,7 +179,8 @@ See https://www.hardenize.com/docs/api/v1/#get-management-ip-whitelist-configura
 Example. Fetch all active certificates that have not yet expired, but will expire within the next 30 days.
 
 ```js
-const { data: config } = await api.getManagementIpWhitelist();
+const { data: config } = await api.getManagementIpWhitelist()
+    .then(response => response.fetchResults());
 ```
 
 #### updateManagementIpWhitelist(changes)
@@ -188,7 +193,7 @@ Example. Change the appNetworks config, leaving the apiNetworks config as it is.
 const { data: newConfig } = await api.updateManagementIpWhitelist({
     appNetworks: ["127.0.0.0/8"],
     appNetworksCascade: "enabled",
-});
+}).then(response => response.fetchResults());
 ```
 
 #### createDnsZone(root, zoneBody)
@@ -210,7 +215,8 @@ ns     IN  A     192.0.2.2
 www    IN  CNAME example.com.
 mx     IN  A     192.0.2.3`;
 
-await api.createDnsZone('example.com', zoneBody);
+await api.createDnsZone('example.com', zoneBody)
+    .then(response => response.fetchResults());
 ```
 
 #### getGroups()
@@ -220,7 +226,8 @@ See https://www.hardenize.com/docs/api/v1/#list-groups
 Fetch a list of groups.
 
 ```js
-const { data: { groups } } = await api.getGroups();
+const { data: { groups } } = await api.getGroups()
+    .then(response => response.fetchResults());
 ```
 
 #### createGroup(id, options)
@@ -230,7 +237,8 @@ See https://www.hardenize.com/docs/api/v1/#create-group
 Create a new group
 
 ```js
-await api.createGroup('groupid', { name: 'Group Name' });
+await api.createGroup('groupid', { name: 'Group Name' })
+    .then(response => response.fetchResults());
 ```
 
 #### deleteGroup(id, options)
@@ -240,14 +248,16 @@ See https://www.hardenize.com/docs/api/v1/#delete-group
 Delete a group
 
 ```js
-await api.deleteGroup('groupid');
+await api.deleteGroup('groupid')
+    .then(response => response.fetchResults());
 ```
 
 This will fail if the group is in use. If you want to force removal even if the group is in use,
 pass an additional object with `force` set to true:
 
 ```js
-await api.deleteGroup('groupid', { force: true });
+await api.deleteGroup('groupid', { force: true })
+    .then(response => response.fetchResults());
 ```
 
 #### getHosts(options)
@@ -257,7 +267,8 @@ See https://www.hardenize.com/docs/api/v1/#list-hosts
 Fetch a list of hosts
 
 ```js
-const { data: { hosts } } = await api.getHosts();
+const { data: { hosts } } = await api.getHosts()
+    .then(response => response.fetchResults());
 ```
 
 #### getHost(hostname)
@@ -267,7 +278,8 @@ See https://www.hardenize.com/docs/api/v1/#retrieve-host
 Fetch details about a host
 
 ```js
-const { data: { host } } = await api.getHost('example.com');
+const { data: { host } } = await api.getHost('example.com')
+    .then(response => response.fetchResults());
 ```
 
 #### createHosts(hostnames, options)
@@ -280,7 +292,7 @@ Create new hosts
 await api.createHosts([ 'example.com', 'example.org' ], {
     status: 'monitored',
     groups: ['Production'],
-});
+}).then(response => response.fetchResults());
 ```
 
 #### updateHosts(hostnames, changes, options)
@@ -299,7 +311,7 @@ await api.updateHosts([ 'example.com', 'example.org' ], {
     groupOp: 'add',
 }, {
     subdomains: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteHosts(hostnames, options)
@@ -309,7 +321,8 @@ See https://www.hardenize.com/docs/api/v1/#delete-hosts
 Delete hosts
 
 ```js
-await api.deleteHosts([ 'example.com', 'example.org' ]);
+await api.deleteHosts([ 'example.com', 'example.org' ])
+    .then(response => response.fetchResults());
 ```
 
 #### getHostDiscoveries()
@@ -324,7 +337,7 @@ Example: Fetch keyword related pending discoveries.
 const { data: { hostDiscoveries } } = await api.getHostDiscoveries({
     resolution: 'pending',
     matchReason:      'keyword',
-});
+}).then(response => response.fetchResults());
 ```
 
 #### getHostDiscovery(id)
@@ -335,7 +348,8 @@ Retrieves a host discovery, by ID. Id's can be seen in the results of
 calling getHostDiscoveries().
 
 ```js
-const { data: { hostDiscovery } } = await api.getHostDiscovery(id);
+const { data: { hostDiscovery } } = await api.getHostDiscovery(id)
+    .then(response => response.fetchResults());
 ```
 
 #### updateHostDiscovery(id, options)
@@ -349,7 +363,7 @@ and effective hostname.
 await api.updateHostDiscovery(id, {
     resolution: 'own',
     effectiveHostname: 'hardenize.com',
-});
+}).then(response => response.fetchResults());
 ```
 
 #### updateHostDiscoveries(ids, changes, options)
@@ -365,7 +379,7 @@ await api.updateHostDiscoveries(ids, {
     resolution: 'own',
 }, {
     preview: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteHostDiscoveries(ids, options)
@@ -378,7 +392,7 @@ Deletes existing host discoveries. Supply the optional argument
 ```js
 await api.deleteHostDiscoveries(ids, {
     preview: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### createHostDiscoveryKeyword(keyword, options)
@@ -399,7 +413,7 @@ await api.createHostDiscoveryKeyword('hardenize', {
         type: 'subdomain',
         exclusion: 'example.com',
     }]
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteHostDiscoveryKeyword(keyword)
@@ -409,7 +423,8 @@ See https://www.hardenize.com/docs/api/v1/#delete-host-discovery-keyword
 Delete a host discovery keyword.
 
 ```js
-await api.deleteHostDiscoveryKeyword('hardenize');
+await api.deleteHostDiscoveryKeyword('hardenize')
+    .then(response => response.fetchResults());
 ```
 
 #### getHostDiscoveryKeywords()
@@ -419,7 +434,8 @@ See https://www.hardenize.com/docs/api/v1/#list-host-discovery-keywords
 Gets the list of host discovery keywords.
 
 ```js
-const { data: { hostDiscoveryKeywords } } = await api.getHostDiscoveryKeywords();
+const { data: { hostDiscoveryKeywords } } = await api.getHostDiscoveryKeywords()
+    .then(response => response.fetchResults());
 ```
 
 #### getHostDiscoveryKeyword(keyword)
@@ -429,7 +445,8 @@ See https://www.hardenize.com/docs/api/v1/#retrieve-host-discovery-keyword
 Gets a host discovery keyword.
 
 ```js
-const { data: { hostDiscoveryKeyword } } = await api.getHostDiscoveryKeyword('hardenize');
+const { data: { hostDiscoveryKeyword } } = await api.getHostDiscoveryKeyword('hardenize')
+    .then(response => response.fetchResults());
 ```
 
 #### createNetworkRange(networkRange, options)
@@ -445,7 +462,7 @@ await api.createNetworkRange('192.168.100.0/24', {
     label: 'My Network Range',
     description: 'A bunch of random hosts',
     scan: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteNetworkRange(networkRange)
@@ -455,7 +472,8 @@ See https://www.hardenize.com/docs/api/v1/#delete-network-range
 Delete a network range.
 
 ```js
-await api.deleteNetworkRange('192.168.100.0/24');
+await api.deleteNetworkRange('192.168.100.0/24')
+    .then(response => response.fetchResults());
 ```
 
 #### getNetworkRanges()
@@ -465,7 +483,8 @@ See https://www.hardenize.com/docs/api/v1/#list-network-ranges
 Gets the list of network ranges.
 
 ```js
-const { data: { networkRanges } } = await api.getNetworkRanges();
+const { data: { networkRanges } } = await api.getNetworkRanges()
+    .then(response => response.fetchResults());
 ```
 
 #### updateNetworkRange(networkRange, options)
@@ -479,7 +498,7 @@ Example: Disable scanning of "192.168.100.0/24"
 ```js
 await api.updateNetworkRange('192.168.100.0/24', {
     scan: false,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### getReports0(options)
@@ -496,7 +515,7 @@ const { data: { reports } } = await api.getReports0({
     name:       'example.com',
     subdomains: true,
     group:      'production'
-});
+}).then(response => response.fetchResults());
 ```
 
 #### getSubOrgs()
@@ -508,7 +527,8 @@ Fetch a list of organizations.
 Example:
 
 ```js
-const { data: { orgs } } = await api.getSubOrgs();
+const { data: { orgs } } = await api.getSubOrgs()
+    .then(response => response.fetchResults());
 ```
 
 #### createSubOrg(id, options)
@@ -525,7 +545,7 @@ const { data: { org } } = await api.createSubOrg('example', {
     name:                   'Example Ltd',
     status:                 'dormant',
     generateApiCredentials: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### updateSubOrg
@@ -540,7 +560,7 @@ Example: Update the status of an organization to `active` and regenerate it's AP
 const { data: { org } } = await api.updateSubOrg('example', {
     status:                 'active',
     generateApiCredentials: true,
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteSubOrg
@@ -552,7 +572,8 @@ Delete an organization from your account.
 Example:
 
 ```js
-await api.deleteSubOrg('example');
+await api.deleteSubOrg('example')
+    .then(response => response.fetchResults());
 ```
 
 #### getEventTypes()
@@ -564,7 +585,8 @@ Fetch a list of event types
 Example:
 
 ```js
-await api.getEventTypes();
+await api.getEventTypes()
+    .then(response => response.fetchResults());
 ```
 
 #### updateEventType(name, options)
@@ -576,7 +598,8 @@ Update an event type.
 Example: Disabling the "example.type" event type:
 
 ```js
-await api.updateEventType('example.type', { enabled: false });
+await api.updateEventType('example.type', { enabled: false })
+    .then(response => response.fetchResults());
 ```
 
 #### getEvents(options)
@@ -588,7 +611,8 @@ Get a list of events.
 Example: Fetch a list of events (up to a max of 3), that have occured since a particular date/time, for a particular type only.
 
 ```js
-await api.getEvents({ type: 'example.type', since: '2018-06-20T12:05:12.123456Z', limit: 3 });
+await api.getEvents({ type: 'example.type', since: '2018-06-20T12:05:12.123456Z', limit: 3 })
+    .then(response => response.fetchResults());
 ```
 
 #### getEvent(id)
@@ -598,7 +622,8 @@ See https://www.hardenize.com/docs/api/v1/#get-event
 Example:
 
 ```js
-await api.getEvent(5);
+await api.getEvent(5)
+    .then(response => response.fetchResults());
 ```
 
 #### createEventHook(options)
@@ -610,11 +635,11 @@ Create an event hook.
 Example:
 
 ```js
-const { eventHook } = await api.createEventHook({
+const { data: { eventHook } } = await api.createEventHook({
   hookType:    'webhook',
   eventTypes:  ['ct.entry'],
   destination: 'https://www.example.com/webhooks/receive',
-});
+}).then(response => response.fetchResults());
 ```
 
 #### deleteEventHook(id)
@@ -626,7 +651,8 @@ Delete an event hook.
 Example:
 
 ```js
-await api.deleteEventHook('24673847d5cb283205568e34f8855ba2');
+await api.deleteEventHook('24673847d5cb283205568e34f8855ba2')
+    .then(response => response.fetchResults());
 ```
 
 #### getEventHooks()
@@ -638,7 +664,8 @@ Get a list of your event hooks.
 Example:
 
 ```js
-const { eventHooks } = await api.getEventHooks();
+const { data: { eventHooks } } = await api.getEventHooks()
+    .then(response => response.fetchResults());
 ```
 
 #### getEventHookDestinations()
@@ -650,7 +677,8 @@ Get a list of your event hook destinations.
 Example:
 
 ```js
-const { eventDestinations } = await api.getEventHookDestinations();
+const { data: { eventDestinations } } = await api.getEventHookDestinations()
+    .then(response => response.fetchResults());
 ```
 
 #### testEventHook(id, options)
@@ -662,7 +690,8 @@ Test an event hook.
 Example: Test with an invalid signature
 
 ```js
-const result = await api.testEventHook('24673847d5cb283205568e34f8855ba2', { invalid: 'signature' });
+const result = await api.testEventHook('24673847d5cb283205568e34f8855ba2', { invalid: 'signature' })
+    .then(response => response.fetchResults());
 ```
 
 #### updateEventHook(id, changes)
@@ -674,7 +703,8 @@ Update an event hook.
 Example: Set the status to enabled
 
 ```js
-const { eventHook } = await api.updateEventHook('24673847d5cb283205568e34f8855ba2', { status: 'enabled' });
+const { data: { eventHook } } = await api.updateEventHook('24673847d5cb283205568e34f8855ba2', { status: 'enabled' })
+    .then(response => response.fetchResults());
 ```
 
 #### updateUser(id, options)
@@ -686,7 +716,8 @@ Update user.
 Example: Disable MFA for user id 1.
 
 ```js
-await api.updateUser(1, { deleteMfa: true });
+await api.updateUser(1, { deleteMfa: true })
+    .then(response => response.fetchResults());
 ```
 
 ### Development

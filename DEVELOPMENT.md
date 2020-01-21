@@ -28,9 +28,9 @@ You may wish to wrap API calls to make changes to them before they are sent. You
 globally, or on a per HardenizeApi object basis. Examples:
 
 ```js
-HardenizeApi.wrapApiCall((path, fetchOptions, data, next) => {
+HardenizeApi.wrapApiCall((url, fetchOptions, data, next) => {
     // Look at and/or make modifications to fetch options and data here
-    return next(path, fetchOptions, data)
+    return next(url, fetchOptions, data)
         .then(res => {
             // Look at response
             return res;
@@ -46,9 +46,9 @@ Or:
 
 ```js
 const api = new HardenizeApi(config);
-api.wrapApiCall((path, fetchOptions, data, next) => {
+api.wrapApiCall((url, fetchOptions, data, next) => {
     // Look at and/or make modifications to fetch options and data here
-    return next(path, fetchOptions, data)
+    return next(url, fetchOptions, data)
         .then(res => {
             // Look at response
             return res;

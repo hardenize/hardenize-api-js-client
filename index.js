@@ -116,36 +116,53 @@ HardenizeApi.prototype.updateUser                  = endpoint(require('./src/use
 
 HardenizeApi.wrapApiCall = function(wrapper) {
     var apiCall = HardenizeApi.prototype.apiCall;
-    HardenizeApi.prototype.apiCall = function(path, fetchOptions, qsOptions) {
+    HardenizeApi.prototype.apiCall = function(request, fetchOptions, qsOptions) {
         if (!fetchOptions) fetchOptions = {};
         if (!qsOptions)    qsOptions    = {};
-        return wrapper.call(this, path, fetchOptions, qsOptions, apiCall.bind(this));
+        return wrapper.call(this, request, fetchOptions, qsOptions, apiCall.bind(this));
     };
 };
 
 HardenizeApi.prototype.wrapApiCall = function(wrapper) {
     var apiCall = this.apiCall;
-    this.apiCall = function(path, fetchOptions, qsOptions) {
+    this.apiCall = function(request, fetchOptions, qsOptions) {
         if (!fetchOptions) fetchOptions = {};
         if (!qsOptions)    qsOptions    = {};
-        return wrapper.call(this, path, fetchOptions, qsOptions, apiCall.bind(this));
+        return wrapper.call(this, request, fetchOptions, qsOptions, apiCall.bind(this));
     };
 };
 
-HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions) {
-
-    var validStatus;
-    if (typeof path === 'object') {
-        validStatus = path.validStatus;
-        path        = path.path;
-    }
-
+HardenizeApi.prototype.baseUrl = function baseUrl(path) {
     var url = this.__config.url.match(/^https?:\/\/[^\/]+\/*$/i)
         ? this.__config.url.replace(/\/+$/, '') + '/v' + API_VERSION + '/org/' + this.__config.org
         : this.__config.url.replace(/\{org\}/g, this.__config.org)
             .replace(/\/+$/, '') + '/v' + API_VERSION;
 
-    url += '/' + path.replace(/^\/+/,'');
+    if (typeof path === 'string') {
+        url = url.replace('/+$', '') + '/' + path.replace(/^\/+/,'');
+    }
+    return url;
+};
+
+HardenizeApi.prototype.absoluteLocation = function absoluteLocation(location) {
+    if (typeof location === 'string' && !location.match(/^https?:\/\//)) {
+        location = this.baseUrl().replace(/^((https?:)?\/\/[^/]+).*/, '$1')
+            + '/' + location.replace(/^\/+/, '');
+    }
+    return location;
+};
+
+HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptions) {
+    if (typeof request === 'string') {
+        request = {
+            url: request,
+        };
+    }
+
+    var validStatus = request.validStatus;
+    var url = request.url.match(/^https?:\/\//i)
+        ? request.url
+        : this.baseUrl(request.url);
 
     if (typeof qsOptions === 'object' && qsOptions !== null) {
         var qs = Object.keys(qsOptions).reduce(function(o, name){
@@ -168,7 +185,7 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
     if (!fetchOptions) fetchOptions = {};
 
     fetchOptions.headers = new Headers(fetchOptions.headers);
-    if (!fetchOptions.hasOwnProperty('redirect')) fetchOptions.redirect = 'error';
+    if (!fetchOptions.hasOwnProperty('redirect')) fetchOptions.redirect = 'manual';
 
     // Add Basic authentication if a user and pass were supplied
     if (this.__config.user && this.__config.pass) {
@@ -182,11 +199,9 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
     return fetch(req).then(function(res){
         self.emit('response', res);
 
-        var isJson = !!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
-
         return res.text().then(function(body){
             self.emit('body', body);
-            if (isJson) {
+            if (isJson(res)) {
                 try {
                     body = JSON.parse(body);
                 } catch(err) {
@@ -194,37 +209,150 @@ HardenizeApi.prototype.apiCall = function apiCall(path, fetchOptions, qsOptions)
                 }
             }
 
-            var badStatus = res.status >= 400;
-
-            if (validStatus) {
-                badStatus = true;
-                [].concat(validStatus).forEach(function(status){
-                    if (res.status == status) badStatus = false;
+            if (isInitialAsyncResponse(req, res, body)) {
+                var nextUrl = self.absoluteLocation(res.headers.get('location'));
+                return self.apiCall({
+                    url:         nextUrl,
+                    validStatus: validStatus,
                 });
             }
 
-            if (badStatus) {
-
-                var err = typeof res.statusText === 'string' && res.statusText.length ? res.statusText : String(res.status);
-                if (isJson && typeof body === 'object' && body !== null && body.errors) {
-                    err = body.errors.map(function(err){
-                        var item = err.message;
-                        if (err.param) item = '"' + err.param + '" param: ' + item;
-                        return item;
-                    }).join(', ');
-                }
-                err     = new Error(err);
-                err.res = res;
-                if (isJson) err.data = body;
-                return Promise.reject(err);
+            if (isPollingAsyncResponse(req, res, body)) {
+                return new Promise(function(r){
+                    setTimeout(r, 1000);
+                }).then(function(){
+                    return self.apiCall({
+                        url:         url,
+                        validStatus: validStatus,
+                    });
+                });
             }
-            return { res: res, data: body };
+
+            if (isFinalAsyncResponse(req, res, body)) {
+
+                if (!body.pages || !body.rows) {
+                    return self.apiCall({
+                        url:         body.resultsLocation,
+                        validStatus: validStatus,
+                    });
+                }
+
+                return {
+                    pages:       body.pages,
+                    rowsPerPage: body.rowsPerPage,
+                    rows:        body.rows,
+                    fetchResults: function fetchResults(startPage, endPage) {
+                        if (typeof startPage === 'undefined' && typeof endPage === 'undefined') {
+                            startPage = 1;
+                            endPage = body.pages;
+                        }
+                        if (startPage < 1 || endPage < startPage || endPage > body.pages) {
+                            return Promise.reject(new Error('Invalid page range'));
+                        }
+                        return self.apiCall({ url: body.resultsLocation, validStatus: validStatus, getPage: true }, {
+                            headers: {
+                                'Range': 'pages=' + startPage + '-' + endPage,
+                            }
+                        });
+                    }
+                };
+            }
+
+            if (!request.getPage && res.status !== 206) {
+                var err = checkValidStatus({ validStatus, res, body });
+                if (err) return Promise.reject(err);
+            }
+
+            if (request.getPage) {
+                return { res: res, data: body };
+            } else {
+                return {
+                    pages: 1,
+                    fetchResults: function fetchResults(startPage, endPage) {
+                        if (typeof startPage === 'undefined' && typeof endPage === 'undefined') {
+                            startPage = 1;
+                            endPage   = 1;
+                        }
+                        if (startPage !== 1 || endPage !== 1) {
+                            return Promise.reject(new Error('Invalid page range'));
+                        }
+                        return Promise.resolve({ res: res, data: body });
+                    }
+                }
+            }
+
         }).catch(function(err){
             err.res = res;
             return Promise.reject(err);
         });
     });
 };
+
+function checkValidStatus({ validStatus, res, body, status }) {
+    if (!status) status = res.status;
+    var badStatus = status >= 400;
+
+    if (validStatus) {
+        badStatus = true;
+        [].concat(validStatus).forEach(function(testStatus){
+            if (status == testStatus) badStatus = false;
+        });
+    }
+
+    if (badStatus) {
+        var err = typeof res.statusText === 'string' && res.statusText.length ? res.statusText : String(status);
+        if (isJson(res) && typeof body === 'object' && body !== null && body.errors) {
+            err = body.errors.map(function(err){
+                var item = err.message;
+                if (err.param) item = '"' + err.param + '" param: ' + item;
+                return item;
+            }).join(', ');
+        }
+        err     = new Error(err);
+        err.res = res;
+        if (isJson(res)) err.data = body;
+        return err;
+    }
+
+}
+
+function isInitialAsyncResponse(req, res, body) {
+    if (req.method !== 'POST')        return false;
+    if (res.status !== 202)           return false;
+    if (!res.headers.get('location')) return false;
+    if (!isJson(res)) return false;
+    if (typeof body.id         !== 'string')  return false;
+    if (typeof body.statusCode !== 'number')  return false;
+    if (typeof body.done       !== 'boolean') return false;
+    return true;
+}
+
+function isPollingAsyncResponse(req, res, body) {
+    if (req.method !== 'GET') return false;
+    if (res.status !== 200)   return false;
+    if (!req.url.match(/\/operations\/[^\/]+$/)) return false;
+    if (!isJson(res)) return false;
+    if (typeof body.id         !== 'string')  return false;
+    if (typeof body.statusCode !== 'number')  return false;
+    if (body.done              !== false)     return false;
+    return true;
+}
+
+function isFinalAsyncResponse(req, res, body) {
+    if (req.method !== 'GET') return false;
+    if (res.status !== 200)   return false;
+    if (!req.url.match(/\/operations\/[^\/]+$/)) return false;
+    if (!isJson(res)) return false;
+    if (typeof body.id              !== 'string') return false;
+    if (typeof body.statusCode      !== 'number') return false;
+    if (typeof body.resultsLocation !== 'string') return false;
+    if (body.done                   !== true)     return false;
+    return true;
+}
+
+function isJson(res) {
+    return!!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
+}
 
 module.exports = HardenizeApi;
 
