@@ -66,13 +66,13 @@ module.exports=function(){return this.apiCall({url:"groups/",validStatus:200})};
 module.exports=function(e,t){var a="hdb/certs/certBySha256/"+encodeURIComponent(e.toLowerCase());return t&&t.unpacked&&(a+="?includeUnpacked=true"),this.apiCall({url:a,validStatus:200})};
 
 },{}],23:[function(require,module,exports){
-module.exports=function(e,i){var t={host:e};if("object"==typeof i&&null!==i&&(i.exact&&(t.includeExactMatch=!0),i.wildcard&&(t.includeWildcardMatch=!0),i.subdomains&&(t.includeSubDomains=!0)),1===Object.keys(t).length)throw new Error("No search filter options supplied");return i.pem&&(t.includePem=!0),i.expired&&(t.includeExpired=!0),i.limit&&(t.limit=i.limit),this.apiCall({url:"hdb/certs/certsByHostSuffix",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)})};
+module.exports=function(t,i){var e={host:t};if("object"==typeof i&&null!==i&&(i.exact&&(e.includeExactMatch=!0),i.wildcard&&(e.includeWildcardMatch=!0),i.subdomains&&(e.includeSubDomains=!0)),1===Object.keys(e).length)throw new Error("No search filter options supplied");return i.pem&&(e.includePem=!0),i.limit&&(e.limit=i.limit),this.apiCall({url:"hdb/certs/certsByHostSuffix",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)})};
 
 },{}],24:[function(require,module,exports){
-module.exports=function(e,i){var t={keyword:e};return i.pem&&(t.includePem=!0),i.expired&&(t.includeExpired=!0),i.limit&&(t.limit=i.limit),this.apiCall({url:"hdb/certs/certsByKeyword",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)})};
+module.exports=function(t,e){var i={keyword:t};return e.pem&&(i.includePem=!0),e.limit&&(i.limit=e.limit),this.apiCall({url:"hdb/certs/certsByKeyword",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(i)})};
 
 },{}],25:[function(require,module,exports){
-module.exports=function(i,e){var t={spki:i};return e.pem&&(t.includePem=!0),e.expired&&(t.includeExpired=!0),e.limit&&(t.limit=e.limit),this.apiCall({url:"hdb/certs/certsBySpki",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)})};
+module.exports=function(i,t){var e={spki:i};return t.pem&&(e.includePem=!0),t.limit&&(e.limit=t.limit),this.apiCall({url:"hdb/certs/certsBySpki",validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)})};
 
 },{}],26:[function(require,module,exports){
 module.exports=function(e,t){t||(t={});var i={ids:e};return Object.keys(t).forEach(function(e){i[e]=t[e]}),this.apiCall({url:"hostDiscoveries/*/",validStatus:200},{method:"delete",headers:{"Content-Type":"application/json"},body:JSON.stringify(i)})};
