@@ -736,13 +736,12 @@ const { data: { cert } } = await api.getHdbCertBySha256(sha256, { unpacked: true
 
 See https://www.hardenize.com/docs/api/v1/#search-hdb-certs-by-host-suffix
 
-Example: Fetch certs containing hardenize.com or a subdomain thereof. Include expired certs. Include raw PEM in results.
+Example: Fetch certs containing hardenize.com or a subdomain thereof. Include raw PEM in results.
 
 ```js
 const { data: { certs } } = await api.getHdbCertsByHostSuffix('hardenize.com', {
     exact:      true,
     subdomains: true,
-    expired:    true,
     pem:        true,
 }).then(response => response.fetchResults());
 ```
@@ -751,10 +750,10 @@ const { data: { certs } } = await api.getHdbCertsByHostSuffix('hardenize.com', {
 
 See https://www.hardenize.com/docs/api/v1/#search-hdb-certs-by-keyword
 
-Example: Fetch certs containing the keyword "hardenize". Include expired certs.
+Example: Fetch certs containing the keyword "hardenize".
 
 ```js
-const { data: { certs } } = await api.getHdbCertsByKeyword('hardenize', { expired: true })
+const { data: { certs } } = await api.getHdbCertsByKeyword('hardenize')
     .then(response => response.fetchResults());
 ```
 
@@ -762,10 +761,10 @@ const { data: { certs } } = await api.getHdbCertsByKeyword('hardenize', { expire
 
 See https://www.hardenize.com/docs/api/v1/#search-hdb-certs-by-spki
 
-Example: Fetch certs with a specific SPKI, including those that have expired.
+Example: Fetch certs with a specific SPKI.
 
 ```js
-const { data: { certs } } = await api.getHdbCertBySpki(spki, { expired: true })
+const { data: { certs } } = await api.getHdbCertBySpki(spki)
     .then(response => response.fetchResults());
 ```
 

@@ -4,9 +4,8 @@ module.exports = function getHdbCertsByKeyword(keyword, options){
         keyword: keyword,
     };
 
-    if (options.pem)     body.includePem     = true;
-    if (options.expired) body.includeExpired = true;
-    if (options.limit)   body.limit          = options.limit;
+    if (options.pem)   body.includePem = true;
+    if (options.limit) body.limit      = options.limit;
 
     return this.apiCall({ url: 'hdb/certs/certsByKeyword', validStatus: 200 }, {
         method:  'post',
