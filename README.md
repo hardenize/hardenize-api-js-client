@@ -357,13 +357,11 @@ const { data: { hostDiscovery } } = await api.getHostDiscovery(id)
 
 See https://www.hardenize.com/docs/api/v1/#update-host-discovery
 
-Updates an existing host discovery. Allows setting the triage resolution
-and effective hostname.
+Updates an existing host discovery. Allows setting the triage resolution.
 
 ```js
 await api.updateHostDiscovery(id, {
-    resolution: 'own',
-    effectiveHostname: 'hardenize.com',
+    resolution: 'own'
 }).then(response => response.fetchResults());
 ```
 
