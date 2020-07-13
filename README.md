@@ -401,17 +401,12 @@ See https://www.hardenize.com/docs/api/v1/#create-host-discovery-keyword
 Create a new host discovery keyword.
 
 Example: Create a host discovery keyword of "hardenize", excluding matching
-hosts if they contain the substring "test" or are a subdomain of "example.com".
+hosts if they contain the substring "test".
 
 ```js
 await api.createHostDiscoveryKeyword('hardenize', {
-    exclusions: [{
-        type: 'substring',
-        exclusion: 'test',
-    }, {
-        type: 'subdomain',
-        exclusion: 'example.com',
-    }]
+    keyword:    'hardenize',
+    exclusions: [ 'test' ]
 }).then(response => response.fetchResults());
 ```
 
@@ -424,6 +419,21 @@ Delete a host discovery keyword.
 ```js
 await api.deleteHostDiscoveryKeyword('hardenize')
     .then(response => response.fetchResults());
+```
+
+#### updateHostDiscoveryKeyword(keyword, options)
+
+See https://www.hardenize.com/docs/api/v1/#update-host-discovery-keyword
+
+Update an existing host discovery keyword.
+
+Example: Enable confusables matching on the "hardenize" keyword.
+
+```js
+await api.updateHostDiscoveryKeyword('hardenize', {
+    keyword:    'hardenize',
+    confusables: true
+}).then(response => response.fetchResults());
 ```
 
 #### getHostDiscoveryKeywords()
