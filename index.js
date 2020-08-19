@@ -76,6 +76,7 @@ HardenizeApi.prototype.getHdbCertsBySpki           = endpoint(require('./src/hdb
 HardenizeApi.prototype.getCerts                    = endpoint(require('./src/certs/getCerts'));
 HardenizeApi.prototype.getCert                     = endpoint(require('./src/certs/getCert'));
 HardenizeApi.prototype.createCert                  = endpoint(require('./src/certs/createCert'));
+HardenizeApi.prototype.updateCert                  = endpoint(require('./src/certs/updateCert'));
 HardenizeApi.prototype.getManagementIpWhitelist    = endpoint(require('./src/config/getManagementIpWhitelist'));
 HardenizeApi.prototype.updateManagementIpWhitelist = endpoint(require('./src/config/updateManagementIpWhitelist'));
 HardenizeApi.prototype.createDnsZone               = endpoint(require('./src/dns_zones/createDnsZone'));

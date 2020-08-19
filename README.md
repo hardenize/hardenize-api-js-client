@@ -173,6 +173,17 @@ switch (res.status) {
 }
 ```
 
+#### updateCert(pem)
+
+See https://www.hardenize.com/docs/api/v1/#update-certificate
+
+Example. Mute a certificate
+
+```js
+const { res, data: { cert } } = await api.updateCert(sha256, { muted: true })
+    .then(response => response.fetchResults());
+```
+
 #### getManagementIpWhitelist()
 
 See https://www.hardenize.com/docs/api/v1/#get-management-ip-whitelist-configuration
