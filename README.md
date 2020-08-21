@@ -208,6 +208,29 @@ const { data: newConfig } = await api.updateManagementIpWhitelist({
 }).then(response => response.fetchResults());
 ```
 
+#### getNetworkScanningConfig()
+
+See https://www.hardenize.com/docs/api/v1/#get-network-scanning-configuration
+
+Example. Fetch network scanning configuration
+
+```js
+const { data: config } = await api.getManagementIpWhitelist()
+    .then(response => response.fetchResults());
+```
+
+#### updateNetworkScanningConfig()
+
+See https://www.hardenize.com/docs/api/v1/#update-network-scanning-configuration
+
+Example. Disable dynamic network scanning
+
+```js
+const { data: newConfig } = await api.updateNetworkScanningConfig({
+    netscanDynamic: false,
+}).then(response => response.fetchResults());
+```
+
 #### createDnsZone(root, zoneBody)
 
 See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
