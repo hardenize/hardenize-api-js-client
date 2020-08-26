@@ -184,25 +184,25 @@ const { res, data: { cert } } = await api.updateCert(sha256, { muted: true })
     .then(response => response.fetchResults());
 ```
 
-#### getManagementIpWhitelist()
+#### getAccessControlConfig()
 
-See https://www.hardenize.com/docs/api/v1/#get-management-ip-whitelist-configuration
+See https://www.hardenize.com/docs/api/v1/#get-access-control-configuration
 
-Example. Fetch all active certificates that have not yet expired, but will expire within the next 30 days.
+Example. Fetch access control config.
 
 ```js
-const { data: config } = await api.getManagementIpWhitelist()
+const { data: config } = await api.getAccessControlConfig()
     .then(response => response.fetchResults());
 ```
 
-#### updateManagementIpWhitelist(changes)
+#### updateAccessControlConfig(changes)
 
-See https://www.hardenize.com/docs/api/v1/#update-management-ip-whitelist-configuration
+See https://www.hardenize.com/docs/api/v1/#update-access-control-configuration
 
 Example. Change the appNetworks config, leaving the apiNetworks config as it is.
 
 ```js
-const { data: newConfig } = await api.updateManagementIpWhitelist({
+const { data: newConfig } = await api.updateAccessControlConfig({
     appNetworks: ["127.0.0.0/8"],
     appNetworksCascade: "enabled",
 }).then(response => response.fetchResults());
@@ -215,7 +215,7 @@ See https://www.hardenize.com/docs/api/v1/#get-network-scanning-configuration
 Example. Fetch network scanning configuration
 
 ```js
-const { data: config } = await api.getManagementIpWhitelist()
+const { data: config } = await api.getNetworkScanningConfig()
     .then(response => response.fetchResults());
 ```
 
