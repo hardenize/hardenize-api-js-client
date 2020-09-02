@@ -14,6 +14,7 @@ module.exports = function createHostDiscoveryKeyword(keyword, options){
     body.exclusions       = options.hasOwnProperty('exclusions')    ? options.exclusions    : [];
     body.matchConfusables = !!options.matchConfusables;
     body.matchFuzzy       = !!options.matchFuzzy;
+    body.matchExact       = !!options.matchExact;
 
     return this.apiCall({ url: 'hostDiscoveryKeywords/', validStatus: 200 }, {
         method:  'post',

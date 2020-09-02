@@ -7,6 +7,7 @@ module.exports = function updateHostDiscoveryKeyword(keyword, options){
     if (options.hasOwnProperty('matchPosition'))    body.matchPosition    = options.matchPosition;
     if (options.hasOwnProperty('matchConfusables')) body.matchConfusables = options.matchConfusables;
     if (options.hasOwnProperty('matchFuzzy'))       body.matchFuzzy       = options.matchFuzzy;
+    if (options.hasOwnProperty('matchExact'))       body.matchExact       = options.matchExact;
     if (options.hasOwnProperty('exclusions'))       body.exclusions       = options.exclusions;
 
     return this.apiCall({ url: 'hostDiscoveryKeywords/' + encodeURIComponent(keyword), validStatus: 200 }, {
