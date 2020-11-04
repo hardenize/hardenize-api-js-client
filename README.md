@@ -208,6 +208,30 @@ const { data: newConfig } = await api.updateAccessControlConfig({
 }).then(response => response.fetchResults());
 ```
 
+#### getSingleSignOnConfig()
+
+See https://www.hardenize.com/docs/api/v1/#get-single-sign-on-configuration
+
+Example. Fetch single sign on config.
+
+```js
+const { data: config } = await api.getSingleSignOnConfig()
+    .then(response => response.fetchResults());
+```
+
+#### updateSingleSignOnConfig(changes)
+
+See https://www.hardenize.com/docs/api/v1/#update-single-sign-on-configuration
+
+Example. Set the single sign on config with XML metadata and a max token lifetime.
+
+```js
+const { data: newConfig } = await api.updateSingleSignOnConfig({
+    samlMetadataXml: "<?xml version="1.0" encoding="utf-8"?><!-- some SAML configuration -->",
+    samlTokenLifetimeSeconds: 1209600,
+}).then(response => response.fetchResults());
+```
+
 #### getNetworkScanningConfig()
 
 See https://www.hardenize.com/docs/api/v1/#get-network-scanning-configuration
