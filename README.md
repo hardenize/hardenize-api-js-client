@@ -231,6 +231,29 @@ const { data: newConfig } = await api.updateNetworkScanningConfig({
 }).then(response => response.fetchResults());
 ```
 
+#### getMfaConfig()
+
+See https://www.hardenize.com/docs/api/v1/#get-mfa-configuration
+
+Example. Fetch multi-factor-authentication config.
+
+```js
+const { data: config } = await api.getMfaConfig()
+    .then(response => response.fetchResults());
+```
+
+#### updateMfaConfig(changes)
+
+See https://www.hardenize.com/docs/api/v1/#update-mfa-configuration
+
+Example. Force the use of multi-factor-authentication
+
+```js
+const { data: newConfig } = await api.updateMfaConfig({
+    mfaRequired: true,
+}).then(response => response.fetchResults());
+```
+
 #### createDnsZone(root, zoneBody)
 
 See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
