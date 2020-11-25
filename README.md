@@ -254,6 +254,30 @@ const { data: newConfig } = await api.updateMfaConfig({
 }).then(response => response.fetchResults());
 ```
 
+#### getSamlConfig()
+
+See https://www.hardenize.com/docs/api/v1/#get-saml-configuration
+
+Example. Fetch saml config.
+
+```js
+const { data: config } = await api.getSamlConfig()
+    .then(response => response.fetchResults());
+```
+
+#### updateSamlConfig(changes)
+
+See https://www.hardenize.com/docs/api/v1/#update-saml-configuration
+
+Example. Enable SAML
+
+```js
+const { data: newConfig } = await api.updateSamlConfig({
+    enabled: true,
+    idpMetadata,
+}).then(response => response.fetchResults());
+```
+
 #### createDnsZone(root, zoneBody)
 
 See https://www.hardenize.com/docs/api/v1/#upload-dns-zone
