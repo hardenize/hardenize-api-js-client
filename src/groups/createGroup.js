@@ -1,11 +1,12 @@
-module.exports = function createGroup(id, options){
+module.exports = function createGroup(name, options){
 
     var body = {
-        id: id,
+        name: name,
     };
 
     if (typeof options === 'object' && options !== null) {
-        if (options.hasOwnProperty('name')) body.name = options.name;
+        if (options.hasOwnProperty('auto')) body.auto = options.auto;
+        if (options.hasOwnProperty('tags')) body.tags = options.tags;
     }
 
     return this.apiCall({ url: 'groups/', validStatus: 201 }, {

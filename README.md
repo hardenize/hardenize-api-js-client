@@ -312,14 +312,14 @@ const { data: { groups } } = await api.getGroups()
     .then(response => response.fetchResults());
 ```
 
-#### createGroup(id, options)
+#### createGroup(name, options)
 
 See https://www.hardenize.com/docs/api/v1/#create-group
 
 Create a new group
 
 ```js
-await api.createGroup('groupid', { name: 'Group Name' })
+await api.createGroup('Group Name', { auto: true, tags: ['tag1', 'tag2'] })
     .then(response => response.fetchResults());
 ```
 
