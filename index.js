@@ -240,10 +240,11 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
             }
 
             if (isFinalAsyncResponse(req, res, body)) {
+                const resultsUrl = `operations/${body.id}/results`;
 
                 if (!body.pages || !body.rows) {
                     return self.apiCall({
-                        url:         body.resultsLocation,
+                        url:         resultsUrl,
                         validStatus: validStatus,
                     });
                 }
@@ -260,7 +261,7 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
                         if (startPage < 1 || endPage < startPage || endPage > body.pages) {
                             return Promise.reject(new Error('Invalid page range'));
                         }
-                        return self.apiCall({ url: body.resultsLocation, validStatus: validStatus, getPage: true }, {
+                        return self.apiCall({ url: resultsUrl, validStatus: validStatus, getPage: true }, {
                             headers: {
                                 'Range': 'pages=' + startPage + '-' + endPage,
                             }
@@ -332,9 +333,8 @@ function isInitialAsyncResponse(req, res, body) {
     if (res.status !== 202)           return false;
     if (!res.headers.get('location')) return false;
     if (!isJson(res)) return false;
-    if (typeof body.id         !== 'string')  return false;
-    if (typeof body.statusCode !== 'number')  return false;
-    if (typeof body.done       !== 'boolean') return false;
+    if (typeof body.id   !== 'string')  return false;
+    if (typeof body.done !== 'boolean') return false;
     return true;
 }
 
@@ -343,9 +343,8 @@ function isPollingAsyncResponse(req, res, body) {
     if (res.status !== 200)   return false;
     if (!req.url.match(/\/operations\/[^\/]+$/)) return false;
     if (!isJson(res)) return false;
-    if (typeof body.id         !== 'string')  return false;
-    if (typeof body.statusCode !== 'number')  return false;
-    if (body.done              !== false)     return false;
+    if (typeof body.id !== 'string')  return false;
+    if (body.done      !== false)     return false;
     return true;
 }
 
@@ -354,10 +353,8 @@ function isFinalAsyncResponse(req, res, body) {
     if (res.status !== 200)   return false;
     if (!req.url.match(/\/operations\/[^\/]+$/)) return false;
     if (!isJson(res)) return false;
-    if (typeof body.id              !== 'string') return false;
-    if (typeof body.statusCode      !== 'number') return false;
-    if (typeof body.resultsLocation !== 'string') return false;
-    if (body.done                   !== true)     return false;
+    if (typeof body.id !== 'string') return false;
+    if (body.done      !== true)     return false;
     return true;
 }
 
