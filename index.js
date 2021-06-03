@@ -210,6 +210,14 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
     return fetch(req).then(function(res){
         self.emit('response', res);
 
+        // Binary data
+        if ((res.headers.get('content-type')||'').match(/^application\/(zip|octet-stream)([\s;].*)?$/)) {
+            return res.buffer().then(function(body){
+                self.emit('body', body);
+                return { res: res, data: body };
+            });
+        }
+
         return res.text().then(function(body){
             self.emit('body', body);
             if (isJson(res)) {
@@ -359,7 +367,7 @@ function isFinalAsyncResponse(req, res, body) {
 }
 
 function isJson(res) {
-    return!!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
+    return !!(res.headers.get('content-type')||'').match(/^application\/json([\s;].*)?$/i);
 }
 
 module.exports = HardenizeApi;
