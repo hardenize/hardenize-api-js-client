@@ -3,8 +3,9 @@ module.exports = function createHosts(hostnames, options){
         hostnames: hostnames,
     };
     if (typeof options === 'object' && options !== null) {
-        if (options.hasOwnProperty('status')) body.status = options.status;
-        if (options.hasOwnProperty('groups')) body.groups = options.groups;
+        Object.keys(options).forEach(function(key){
+            body[key] = options[key];
+        });
     }
 
     return this.apiCall({ url: 'hosts/', validStatus: 204 }, {
