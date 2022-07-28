@@ -168,7 +168,7 @@ module.exports=function(){return this.apiCall({url:"suborgs/",validStatus:200})}
 module.exports=function(o,t){null==t&&(t={});var n={};return Object.keys(t).forEach(function(o){n[o]=t[o]}),this.apiCall({url:"suborgs/"+encodeURIComponent(o),validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)})};
 
 },{}],57:[function(require,module,exports){
-module.exports=function(t,e){null==e&&(e={});var n={};return Object.keys(e).forEach(function(t){n[t]=e[t]}),this.apiCall({url:"users/"+encodeURIComponent(t),validStatus:204},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)})};
+module.exports=function(t,e){null==e&&(e={});var n={};return Object.keys(e).forEach(function(t){n[t]=e[t]}),this.apiCall({url:"users/"+encodeURIComponent(t),validStatus:200},{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)})};
 
 },{}]},{},[1])(1)
 });
