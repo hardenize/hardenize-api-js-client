@@ -797,6 +797,76 @@ const { data: { eventHook } } = await api.updateEventHook('24673847d5cb283205568
     .then(response => response.fetchResults());
 ```
 
+#### getUsers()
+
+See https://www.hardenize.com/docs/api/v1/#list-users
+
+Get users
+
+Example:
+
+```js
+const { data: { users } } = await api.getUsers()
+    .then(response => response.fetchResults());
+```
+
+#### getUser(userId)
+
+See https://www.hardenize.com/docs/api/v1/#get-user
+
+Get user
+
+Example: Get user id 1.
+
+```js
+const { data: { user } } = await api.getUser(1)
+    .then(response => response.fetchResults());
+```
+
+#### inviteUser(options)
+
+See https://www.hardenize.com/docs/api/v1/#invite-new-user
+
+Invite a new user to the org
+
+Example:
+
+```js
+const { data: { user } } = await api.inviteUser({
+    name:  'Bob',
+    email: 'bob@example.com',
+    role:  'observer'
+}).then(response => response.fetchResults());
+```
+
+#### cancelUserInvite(userId)
+
+See https://www.hardenize.com/docs/api/v1/#cancel-invite
+
+Cancel a user invitation
+
+Example: Cancel invite for user id 1
+
+```js
+await api.cancelUserInvite(1)
+    .then(response => response.fetchResults());
+```
+
+#### createServiceAccount(options)
+
+See https://www.hardenize.com/docs/api/v1/#create-service-account
+
+Create a new service account
+
+Example:
+
+```js
+const { data: { user } } = await api.createServiceAccount({
+    name:  'Test Service Account',
+    role:  'observer'
+}).then(response => response.fetchResults());
+```
+
 #### updateUser(id, options)
 
 See https://www.hardenize.com/docs/api/v1/#update-user

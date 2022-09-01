@@ -123,6 +123,11 @@ HardenizeApi.prototype.createEventHook             = endpoint(require('./src/eve
 HardenizeApi.prototype.deleteEventHook             = endpoint(require('./src/events/deleteEventHook'));
 HardenizeApi.prototype.updateEventHook             = endpoint(require('./src/events/updateEventHook'));
 HardenizeApi.prototype.testEventHook               = endpoint(require('./src/events/testEventHook'));
+HardenizeApi.prototype.getUser                     = endpoint(require('./src/users/getUser'));
+HardenizeApi.prototype.getUsers                    = endpoint(require('./src/users/getUsers'));
+HardenizeApi.prototype.inviteUser                  = endpoint(require('./src/users/inviteUser'));
+HardenizeApi.prototype.cancelUserInvite            = endpoint(require('./src/users/cancelInvite'));
+HardenizeApi.prototype.createServiceAccount        = endpoint(require('./src/users/createServiceAccount'));
 HardenizeApi.prototype.updateUser                  = endpoint(require('./src/users/updateUser'));
 
 HardenizeApi.wrapApiCall = function(wrapper) {
