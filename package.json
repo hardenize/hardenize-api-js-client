@@ -13,10 +13,10 @@
     "url": "https://github.com/hardenize/hardenize-api-js-client/issues"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^3.2.10"
   },
   "devDependencies": {
-    "browserify": "^16.5.2",
+    "browserify": "^17.0.0",
     "uglifyify": "^5.0.1"
   },
   "scripts": {
