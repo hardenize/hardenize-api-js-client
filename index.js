@@ -263,9 +263,11 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
                 }
 
                 return {
-                    pages:       body.pages,
-                    rowsPerPage: body.rowsPerPage,
-                    rows:        body.rows,
+                    pages:              body.pages,
+                    rowsPerPage:        body.rowsPerPage,
+                    rows:               body.rows,
+                    url:                resultsUrl,
+                    contentDisposition: body.contentDisposition,
                     fetchResults: function fetchResults(startPage, endPage) {
                         if (typeof startPage === 'undefined' && typeof endPage === 'undefined') {
                             startPage = 1;
@@ -277,7 +279,7 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
                         return self.apiCall({ url: resultsUrl, validStatus: validStatus, getPage: true }, {
                             headers: {
                                 'Range': 'pages=' + startPage + '-' + endPage,
-                            }
+                            },
                         });
                     }
                 };
