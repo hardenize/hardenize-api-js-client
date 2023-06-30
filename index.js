@@ -233,6 +233,8 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
                 }
             }
 
+            const contentDisposition = body.contentDisposition || res.headers.get('Content-Disposition');
+
             if (isInitialAsyncResponse(req, res, body)) {
                 var nextUrl = self.absoluteLocation(res.headers.get('location'));
                 return self.apiCall({
@@ -267,7 +269,7 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
                     rowsPerPage:        body.rowsPerPage,
                     rows:               body.rows,
                     url:                resultsUrl,
-                    contentDisposition: body.contentDisposition,
+                    contentDisposition: contentDisposition,
                     fetchResults: function fetchResults(startPage, endPage) {
                         if (typeof startPage === 'undefined' && typeof endPage === 'undefined') {
                             startPage = 1;
@@ -295,6 +297,7 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
             } else {
                 return {
                     pages: 1,
+                    contentDisposition: contentDisposition,
                     fetchResults: function fetchResults(startPage, endPage) {
                         if (typeof startPage === 'undefined' && typeof endPage === 'undefined') {
                             startPage = 1;
