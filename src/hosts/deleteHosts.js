@@ -3,7 +3,8 @@ module.exports = function deleteHosts(hostnames, options){
         hostnames: hostnames,
     };   
     if (typeof options === 'object' && options !== null) {
-        if (options.hasOwnProperty('preview')) body.preview = options.preview;
+        if (options.hasOwnProperty('preview'))    body.preview    = options.preview;
+        if (options.hasOwnProperty('subdomains')) body.subdomains = options.subdomains;
     }
 
     return this.apiCall({ url: 'hosts/', validStatus: 200 }, {

@@ -403,7 +403,7 @@ See https://www.hardenize.com/docs/api/v1/#delete-hosts
 Delete hosts
 
 ```js
-await api.deleteHosts([ 'example.com', 'example.org' ])
+await api.deleteHosts([ 'example.com', 'example.org' ], { subdomains: true })
     .then(response => response.fetchResults());
 ```
 
