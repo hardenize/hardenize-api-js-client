@@ -216,11 +216,18 @@ HardenizeApi.prototype.apiCall = function apiCall(request, fetchOptions, qsOptio
         self.emit('response', res);
 
         // Binary data
-        if ((res.headers.get('content-type')||'').match(/^application\/(zip|octet-stream)([\s;].*)?$/)) {
-            return res.buffer().then(function(body){
-                self.emit('body', body);
-                return { res: res, data: body };
-            });
+        if ((res.headers.get('content-type')||'').match(/^(image\/.+|application\/(zip|octet-stream))([\s;].*)?$/)) {
+            if (typeof res.buffer === 'function') {
+                return res.buffer().then(function(body){
+                    self.emit('body', body);
+                    return { res: res, data: body };
+                });
+            } else {
+                return res.blob().then(function(body){
+                    self.emit('body', body);
+                    return { res: res, data: body };
+                });
+            }
         }
 
         return res.text().then(function(body){
